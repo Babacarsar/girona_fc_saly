@@ -3,22 +3,23 @@ services:
     name: girona_fc_api
     env: docker
     plan: free
-    branch: main
-    dockerfilePath: ./Dockerfile
+    autoDeploy: true
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        value: your-app-key-here
+        generateValue: true
+      - key: APP_DEBUG
+        value: false
       - key: DB_CONNECTION
-        value: mysql
+        value: pgsql
       - key: DB_HOST
-        value: your-db-host
+        value: dpg-d24palili9vc73ehqdn0-a.oregon-postgres.render.com
       - key: DB_PORT
-        value: 3306
+        value: 5432
       - key: DB_DATABASE
-        value: your-db-name
+        value: girona_db
       - key: DB_USERNAME
-        value: your-username
+        value: girona_user
       - key: DB_PASSWORD
-        value: your-password
+        value: eeqJGisowxtO8vq3VjWXqsH9Uc32aNAh
