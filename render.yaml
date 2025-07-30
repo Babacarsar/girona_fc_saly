@@ -1,16 +1,18 @@
 services:
   - type: web
-    name: girona_fc_api
+    name: girona_fc_saly
     env: docker
     plan: free
-    autoDeploy: true
+    region: oregon
+    branch: main
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: APP_ENV
         value: production
-      - key: APP_KEY
-        generateValue: true
       - key: APP_DEBUG
         value: false
+      - key: APP_URL
+        value: https://girona-fc-saly.onrender.com
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
