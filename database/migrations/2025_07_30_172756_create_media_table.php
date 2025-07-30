@@ -8,9 +8,9 @@ return new class extends Migration {
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable(); // Titre de la photo/vidéo
-            $table->enum('type', ['image', 'video']); // Type de média
-            $table->string('path'); // chemin du fichier
+              $table->string('title');
+    $table->string('file_path');
+    $table->enum('type', ['image', 'video']);
             $table->timestamps();
         });
     }

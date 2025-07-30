@@ -12,72 +12,41 @@ class MediaadminController extends Controller
 {
     public function index()
     {
-        $media = Media::latest()->get();
+        $media = Media::latest()->paginate(12);
         return view('admin.media.index', compact('media'));
     }
-
     public function create()
-    {
-        return view('admin.media.create');
-    }
+{
+    return view('admin.media.create');
+}
+
 
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'nullable|string|max:255',
-            'type' => 'required|in:image,video',
-            'file' => 'required|file|mimes:jpg,jpeg,png,mp4,mov,avi|max:20480',
+            'files.*' => 'required|file|mimes:jpeg,png,jpg,mp4,mov,avi|max:20480',
+            'titles.*' => 'required|string|max:255',
         ]);
 
-        $filename = Str::uuid() . '.' . $request->file('file')->getClientOriginalExtension();
-        $path = $request->file('file')->storeAs('public/media', $filename);
+        foreach ($request->file('files') as $i => $file) {
+            $path = $file->store('uploads', 'public');
+            $type = str_starts_with($file->getMimeType(), 'video') ? 'video' : 'image';
 
-        Media::create([
-            'title' => $request->title,
-            'type' => $request->type,
-            'path' => str_replace('public/', '', $path),
-        ]);
-
-        return redirect()->route('admin.media.index')->with('success', 'Média ajouté avec succès.');
-    }
-
-    public function edit(Media $media)
-    {
-        return view('admin.media.edit', compact('media'));
-    }
-
-    public function update(Request $request, Media $media)
-    {
-        $request->validate([
-            'title' => 'nullable|string|max:255',
-            'type' => 'required|in:image,video',
-            'path' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov,avi|max:20480',
-        ]);
-
-        if ($request->hasFile('path')) {
-            // Supprimer l’ancien fichier
-            if ($media->path) {
-                Storage::delete('public/' . $media->path);
-            }
-
-            // Enregistrer le nouveau
-            $filename = Str::uuid() . '.' . $request->file('path')->getClientOriginalExtension();
-            $newPath = $request->file('path')->storeAs('public/media', $filename);
-            $media->path = str_replace('public/', '', $newPath);
+            Media::create([
+                'title' => $request->titles[$i],
+                'file_path' => $path,
+                'type' => $type,
+            ]);
         }
 
-        $media->title = $request->title;
-        $media->type = $request->type;
-        $media->save();
-
-        return redirect()->route('admin.media.index')->with('success', 'Média mis à jour.');
+        return redirect()->back()->with('success', 'Médias uploadés avec succès !');
     }
 
-  public function destroy(Media $medium)
-{
-    Storage::delete('public/' . $medium->path);
-    $medium->delete();
+    public function destroy(Media $media)
+    {
+        Storage::disk('public')->delete($media->file_path);
+        $media->delete();
 
-    return back()->with('success', 'Média supprimé.');
-}
+        return redirect()->back()->with('success', 'Média supprimé.');
+    }
 }

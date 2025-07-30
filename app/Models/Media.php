@@ -8,10 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Media extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'type',      // exemple: photo ou video
-        'path',    // lien de la photo ou vidéo
-        'title',     // titre du média
-        'description', // texte descriptif
-    ];
+       protected $fillable = ['title', 'file_path', 'type'];
 }
