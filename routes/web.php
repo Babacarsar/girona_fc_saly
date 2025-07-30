@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategorieAdminController;
 use App\Http\Controllers\Admin\StaffTechniqueAdminController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\ActualiteAdminController;
+use App\Http\Controllers\Admin\MediaAdminController;
 
 
 /*
@@ -57,5 +58,11 @@ Route::prefix('admin')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('categories', CategorieAdminController::class);
 });
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('media', MediaAdminController::class);
+});
+
 
 
