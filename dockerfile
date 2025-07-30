@@ -1,28 +1,30 @@
-# Étape 1 : Utiliser une image officielle PHP avec extensions nécessaires
-FROM php:8.2-fpm
+# Dockerfile pour Laravel sur Render avec Apache
+FROM php:8.2-apache
 
-# Étape 2 : Installer les dépendances système
-RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpq-dev libonig-dev libxml2-dev libzip-dev \
-    && docker-php-ext-install pdo pdo_pgsql zip
+# Installer les extensions PHP nécessaires
+RUN docker-php-ext-install pdo pdo_pgsql
 
-# Étape 3 : Installer Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Activer le module Apache rewrite
+RUN a2enmod rewrite
 
-# Étape 4 : Définir le répertoire de travail
-WORKDIR /var/www
+# Copier les fichiers Laravel dans le conteneur
+COPY . /var/www/html
 
-# Étape 5 : Copier les fichiers du projet Laravel
-COPY . .
+# Copier la configuration Apache personnalisée
+COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
 
-# Étape 6 : Installer les dépendances PHP
+# Donner les permissions nécessaires
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Installer les dépendances PHP Laravel
+WORKDIR /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
-# Étape 7 : Donner les bonnes permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+# Exposer le port 80
+EXPOSE 80
 
-# Étape 8 : Exposer le port 8000
-EXPOSE 8000
-
-# Étape 9 : Lancer Laravel avec le serveur intégré
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Démarrer Apache
+CMD ["apache2-foreground"]
