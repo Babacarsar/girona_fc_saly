@@ -37,7 +37,6 @@ RUN php artisan config:clear && \
     php artisan view:clear && \
     php artisan config:cache
 
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 
 # Étape 10 : exposer le port
