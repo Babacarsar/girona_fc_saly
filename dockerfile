@@ -1,45 +1,43 @@
-# Étape 1 : base image
+# ✅ Dockerfile (placer à la racine de ton projet Laravel)
+
 FROM php:8.2-apache
 
-# Étape 2 : installer les extensions système
+# Installer extensions utiles
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
     zip \
-    git \
+    unzip \
     curl \
+    git \
     libzip-dev \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    && docker-php-ext-install pdo pdo_mysql zip
 
-# Étape 3 : activer mod_rewrite pour Laravel
+# Activer mod_rewrite
 RUN a2enmod rewrite
 
-# Étape 4 : copier le code source Laravel
+# Copier projet
 COPY . /var/www/html/
 
-# Étape 5 : définir le bon working directory
+# Travailler dans le dossier Laravel
 WORKDIR /var/www/html
 
-# Étape 6 : ajuster les permissions
+# Donner les bons droits
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage
 
-# Étape 7 : installer Composer
+# Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Étape 8 : installer les dépendances Laravel
+# Installer dépendances
 RUN composer install --no-interaction --optimize-autoloader
 
-# Étape 9 : vider tous les caches Laravel
+# Clear + cache Laravel
 RUN php artisan config:clear && \
     php artisan cache:clear && \
     php artisan route:clear && \
     php artisan view:clear && \
     php artisan config:cache
 
-COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
-
-
-
-# Étape 10 : exposer le port
 EXPOSE 80
