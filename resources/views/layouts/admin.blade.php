@@ -112,6 +112,12 @@
                         <i class="bi bi-newspaper me-2"></i> Actualités
                     </a>
                 </li>
+                <li class="nav-item">
+    <a href="{{ route('admin.media.index') }}" class="nav-link {{ request()->is('admin/media*') ? 'active' : '' }}">
+        <i class="bi bi-image me-2"></i> Médias
+    </a>
+</li>
+
             </ul>
         </div>
 

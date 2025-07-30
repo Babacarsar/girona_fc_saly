@@ -6,6 +6,7 @@ use App\Http\Controllers\JoueurController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\API\StaffTechniqueController;
 use App\Http\Controllers\API\ActualiteController;
+use App\Http\Controllers\API\MediaApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,10 @@ Route::apiResource('staff', StaffTechniqueController::class)->only(['index']);
 Route::get('/actualites', [ActualiteController::class, 'index']);
 Route::get('/actualites/{id}', [ActualiteController::class, 'show']);
 
+
+
+Route::get('/media', [MediaApiController::class, 'index']);
+Route::get('/media/{id}', [MediaApiController::class, 'show']);
 
 
 
