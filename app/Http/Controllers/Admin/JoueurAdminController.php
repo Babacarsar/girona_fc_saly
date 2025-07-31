@@ -37,8 +37,8 @@ class JoueurAdminController extends Controller
 
         if ($request->hasFile('photo')) {
             $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('uploads/joueurs'), $filename);
-            $data['photo'] = 'uploads/joueurs/' . $filename;
+            $request->photo->move(public_path('upload/joueurs'), $filename);
+            $data['photo'] = 'upload/joueurs/' . $filename;
         }
 
         Joueur::create($data);
@@ -57,8 +57,8 @@ class JoueurAdminController extends Controller
 
         if ($request->hasFile('photo')) {
             $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('uploads/joueurs'), $filename);
-            $data['photo'] = 'uploads/joueurs/' . $filename;
+            $request->photo->move(public_path('upload/joueurs'), $filename);
+            $data['photo'] = 'upload/joueurs/' . $filename;
         }
 
         $joueur->update($data);
