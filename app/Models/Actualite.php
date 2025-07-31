@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Actualite extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'titre',
         'contenu',
         'image',
+        'image_public_id',
+        'auteur',
+        'date_publication',
     ];
 }

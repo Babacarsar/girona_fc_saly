@@ -21,6 +21,20 @@
             @error('contenu') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
+        {{-- Auteur --}}
+        <div class="mb-3">
+            <label class="form-label">Auteur (optionnel)</label>
+            <input type="text" name="auteur" class="form-control" value="{{ old('auteur') }}">
+            @error('auteur') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
+        {{-- Date de publication --}}
+        <div class="mb-3">
+            <label class="form-label">Date de publication (optionnelle)</label>
+            <input type="date" name="date_publication" class="form-control" value="{{ old('date_publication') }}">
+            @error('date_publication') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
         {{-- Image --}}
         <div class="mb-3">
             <label class="form-label">Image (optionnelle)</label>
@@ -29,8 +43,10 @@
         </div>
 
         {{-- Boutons --}}
-        <button type="submit" class="btn btn-success">💾 Enregistrer</button>
-        <a href="{{ route('admin.actualites.index') }}" class="btn btn-secondary">Annuler</a>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">💾 Enregistrer</button>
+            <a href="{{ route('admin.actualites.index') }}" class="btn btn-secondary">Annuler</a>
+        </div>
     </form>
 </div>
 @endsection

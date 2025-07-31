@@ -29,14 +29,16 @@
                     <tr>
                         <td class="text-center" style="width: 100px;">
                             @if ($actu->image)
-                                <img src="{{ asset($actu->image) }}" alt="image" class="img-thumbnail rounded" width="80">
+                                <img src="{{ $actu->image }}" alt="image" class="img-thumbnail rounded" width="80">
                             @else
                                 <span class="text-muted">Aucune</span>
                             @endif
                         </td>
                         <td>{{ $actu->titre }}</td>
                         <td>{{ Str::limit(strip_tags($actu->contenu), 100, '...') }}</td>
-                        <td>{{ $actu->created_at->format('d/m/Y') }}</td>
+                        <td>
+                            {{ $actu->date_publication ? \Carbon\Carbon::parse($actu->date_publication)->format('d/m/Y') : $actu->created_at->format('d/m/Y') }}
+                        </td>
                         <td>
                             <div class="d-flex gap-2">
                                 <a href="{{ route('admin.actualites.edit', $actu->id) }}" class="btn btn-sm btn-primary">
