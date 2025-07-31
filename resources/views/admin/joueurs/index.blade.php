@@ -46,7 +46,14 @@
                     <tr>
                         <td class="text-center">
                             @if ($joueur->photo)
-                                <img src="{{ asset($joueur->photo) }}" alt="Photo" width="60" height="60" class="rounded-circle object-fit-cover">
+                                <img
+                                    src="{{ $joueur->photo }}"
+                                    alt="Photo"
+                                    width="60"
+                                    height="60"
+                                    class="rounded-circle object-fit-cover"
+                                    style="object-fit: cover;"
+                                >
                             @else
                                 <span class="text-muted">Aucune</span>
                             @endif

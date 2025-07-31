@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Categorie;
 use App\Models\Joueur;
 use Illuminate\Http\Request;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class JoueurAdminController extends Controller
 {
@@ -33,12 +34,19 @@ class JoueurAdminController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'nom' => 'required|string|max:255',
+            'categorie_id' => 'required|exists:categories,id',
+            'poste' => 'nullable|string|max:255',
+            'numero' => 'nullable|integer',
+            'photo' => 'nullable|image|max:2048',
+        ]);
 
         if ($request->hasFile('photo')) {
-            $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('upload/joueurs'), $filename);
-            $data['photo'] = 'upload/joueurs/' . $filename;
+            $uploaded = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' => 'joueurs_foot'
+            ]);
+            $data['photo'] = $uploaded->getSecurePath();
         }
 
         Joueur::create($data);
@@ -53,12 +61,19 @@ class JoueurAdminController extends Controller
 
     public function update(Request $request, Joueur $joueur)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'nom' => 'required|string|max:255',
+            'categorie_id' => 'required|exists:categories,id',
+            'poste' => 'nullable|string|max:255',
+            'numero' => 'nullable|integer',
+            'photo' => 'nullable|image|max:2048',
+        ]);
 
         if ($request->hasFile('photo')) {
-            $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('upload/joueurs'), $filename);
-            $data['photo'] = 'upload/joueurs/' . $filename;
+            $uploaded = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' => 'joueurs_foot'
+            ]);
+            $data['photo'] = $uploaded->getSecurePath();
         }
 
         $joueur->update($data);
