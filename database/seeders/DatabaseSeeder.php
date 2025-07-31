@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
       $this->call([
         JoueurSeeder::class,
-        StaffTechniqueSeeder::class,
+        //StaffTechniqueSeeder::class,
     ]);
     }
 }
