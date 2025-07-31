@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ActualiteAdminController;
 use App\Http\Controllers\Admin\MediaAdminController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,6 +64,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('media', MediaAdminController::class);
 });
+
+Route::get('/test-cloud', function () {
+    return config('cloudinary');
+});
+
 
 
 
