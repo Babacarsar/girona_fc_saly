@@ -37,8 +37,8 @@ class StaffTechniqueAdminController extends Controller
 
         if ($request->hasFile('photo')) {
             $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('uploads/staff'), $filename);
-            $data['photo'] = 'uploads/staff/' . $filename;
+            $request->photo->move(public_path('upload/staff'), $filename);
+            $data['photo'] = 'upload/staff/' . $filename;
         }
 
         StaffTechnique::create($data);
@@ -57,8 +57,8 @@ class StaffTechniqueAdminController extends Controller
 
         if ($request->hasFile('photo')) {
             $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('uploads/staff'), $filename);
-            $data['photo'] = 'uploads/staff/' . $filename;
+            $request->photo->move(public_path('upload/staff'), $filename);
+            $data['photo'] = 'upload/staff/' . $filename;
         }
 
         $staff->update($data);

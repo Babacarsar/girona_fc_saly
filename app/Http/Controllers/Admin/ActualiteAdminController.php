@@ -29,8 +29,8 @@ class ActualiteAdminController extends Controller
 
         if ($request->hasFile('image')) {
             $filename = time().'_'.$request->image->getClientOriginalName();
-            $request->image->move(public_path('uploads/actualites'), $filename);
-            $data['image'] = 'uploads/actualites/' . $filename;
+            $request->image->move(public_path('upload/actualites'), $filename);
+            $data['image'] = 'upload/actualites/' . $filename;
         }
 
         Actualite::create($data);
@@ -52,8 +52,8 @@ class ActualiteAdminController extends Controller
 
         if ($request->hasFile('image')) {
             $filename = time().'_'.$request->image->getClientOriginalName();
-            $request->image->move(public_path('uploads/actualites'), $filename);
-            $data['image'] = 'uploads/actualites/' . $filename;
+            $request->image->move(public_path('upload/actualites'), $filename);
+            $data['image'] = 'upload/actualites/' . $filename;
         }
 
         $actualite->update($data);
