@@ -35,12 +35,13 @@ class JoueurAdminController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nom' => 'required|string|max:255',
-            'categorie_id' => 'required|exists:categories,id',
-            'poste' => 'nullable|string|max:255',
-            'numero' => 'nullable|integer',
-            'photo' => 'nullable|image|max:2048',
-        ]);
+    'nom'         => 'required|string|max:255',
+    'prenom'      => 'required|string|max:255', // ✅ manquant
+    'categorie_id'=> 'required|exists:categories,id',
+    'poste'       => 'nullable|string|max:255',
+    'numero'      => 'nullable|integer',
+    'photo'       => 'nullable|image|max:2048',
+]);
 
         if ($request->hasFile('photo')) {
             $uploaded = Cloudinary::upload($request->file('photo')->getRealPath(), [
@@ -62,12 +63,13 @@ class JoueurAdminController extends Controller
     public function update(Request $request, Joueur $joueur)
     {
         $data = $request->validate([
-            'nom' => 'required|string|max:255',
-            'categorie_id' => 'required|exists:categories,id',
-            'poste' => 'nullable|string|max:255',
-            'numero' => 'nullable|integer',
-            'photo' => 'nullable|image|max:2048',
-        ]);
+    'nom'         => 'required|string|max:255',
+    'prenom'      => 'required|string|max:255', // ✅ manquant
+    'categorie_id'=> 'required|exists:categories,id',
+    'poste'       => 'nullable|string|max:255',
+    'numero'      => 'nullable|integer',
+    'photo'       => 'nullable|image|max:2048',
+]);
 
         if ($request->hasFile('photo')) {
             $uploaded = Cloudinary::upload($request->file('photo')->getRealPath(), [
