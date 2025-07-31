@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Ajouter un membre du staff</h2>
+    <h2>Ajouter un membre du staff technique</h2>
 
     <form action="{{ route('admin.staff.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
