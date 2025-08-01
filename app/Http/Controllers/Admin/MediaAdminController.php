@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Media;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class MediaadminController extends Controller
 {
@@ -22,41 +21,24 @@ class MediaadminController extends Controller
 
     public function store(Request $request)
     {
+        // ✅ On ne reçoit que l’URL et le type, pas le fichier
         $request->validate([
-            'files.*' => 'required|file|mimes:jpg,jpeg,png,mp4,mov,avi|max:20480',
-            'titles.*' => 'nullable|string|max:255',
+            'url'   => 'required|url',
+            'title' => 'nullable|string|max:255',
+            'type'  => 'required|in:image,video',
         ]);
 
-        $files = $request->file('files');
-        $titles = $request->input('titles');
+        Media::create([
+            'title'     => $request->input('title'),
+            'type'      => $request->input('type'),
+            'file_path' => $request->input('url'), // Cloudinary URL
+        ]);
 
-        foreach ($files as $index => $file) {
-            if (!$file || !$file->isValid()) continue;
-
-            $extension = $file->getClientOriginalExtension();
-            $type = in_array($extension, ['mp4', 'mov', 'avi']) ? 'video' : 'image';
-            $title = $titles[$index] ?? null;
-
-            // Upload to Cloudinary
-            $uploaded = Cloudinary::upload($file->getRealPath(), [
-                'folder' => 'media_girona',
-                'resource_type' => $type === 'video' ? 'video' : 'image'
-            ]);
-
-            // Save to DB
-            Media::create([
-                'titre' => $title,
-                'type' => $type,
-                'url' => $uploaded->getSecurePath(),
-            ]);
-        }
-
-        return redirect()->route('admin.media.index')->with('success', 'Médias ajoutés avec succès.');
+        return redirect()->route('admin.media.index')->with('success', 'Média enregistré avec succès.');
     }
 
     public function destroy(Media $media)
     {
-        // Optionnel : suppression sur Cloudinary si tu stockes le public_id
         $media->delete();
         return redirect()->back()->with('success', 'Média supprimé.');
     }

@@ -31,16 +31,16 @@
                         <td>
                             <span class="badge bg-secondary">{{ ucfirst($item->type) }}</span>
                         </td>
-                     <td>
-    @if($item->type === 'image')
-        <img src="{{ asset($item->file_path) }}" alt="image" class="img-thumbnail" style="max-width: 120px;">
-    @else
-        <video width="160" height="100" controls>
-            <source src="{{ asset($item->file_path) }}">
-            Votre navigateur ne supporte pas la vidéo.
-        </video>
-    @endif
-</td>
+                        <td>
+                            @if($item->type === 'image')
+                                <img src="{{ $item->file_path }}" alt="image" class="img-thumbnail" style="max-width: 120px;">
+                            @else
+                                <video width="160" height="100" controls>
+                                    <source src="{{ $item->file_path }}">
+                                    Votre navigateur ne supporte pas la vidéo.
+                                </video>
+                            @endif
+                        </td>
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                         <td>
                             <form action="{{ route('admin.media.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')">

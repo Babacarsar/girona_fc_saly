@@ -11,7 +11,7 @@
         {{-- Titre (facultatif) --}}
         <div class="mb-3">
             <label class="form-label">Titre <small class="text-muted">(facultatif)</small></label>
-            <input type="text" name="titre" value="{{ old('titre', $media->titre) }}" class="form-control" placeholder="Titre du média">
+            <input type="text" name="title" value="{{ old('title', $media->title) }}" class="form-control" placeholder="Titre du média">
         </div>
 
         {{-- Type --}}
@@ -26,7 +26,7 @@
         {{-- URL Cloudinary --}}
         <div class="mb-3">
             <label class="form-label">URL Cloudinary</label>
-            <input type="text" name="url" value="{{ old('url', $media->url) }}" class="form-control" required>
+            <input type="text" name="file_path" value="{{ old('file_path', $media->file_path) }}" class="form-control" required>
         </div>
 
         <button type="submit" class="btn btn-primary">💾 Mettre à jour</button>
