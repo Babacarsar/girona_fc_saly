@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -26,7 +27,9 @@ class MediaAdminController extends Controller
             'titles.*' => 'nullable|string|max:255',
         ]);
 
-        $files = $request->file('files');
+        $files = $request->file('files') ?? [];
+        $files = is_array($files) ? $files : [$files]; // ✅ Convertir en tableau si un seul fichier
+
         $titles = $request->input('titles');
 
         foreach ($files as $index => $file) {
@@ -36,13 +39,13 @@ class MediaAdminController extends Controller
             $type = in_array($ext, ['mp4', 'mov', 'avi']) ? 'video' : 'image';
             $title = $titles[$index] ?? null;
 
-            // Upload to Cloudinary
+            // ✅ Upload vers Cloudinary
             $upload = Cloudinary::upload($file->getRealPath(), [
                 'folder' => 'media_girona',
                 'resource_type' => $type === 'video' ? 'video' : 'image',
             ]);
 
-            // Save in DB
+            // ✅ Sauvegarde en base
             Media::create([
                 'title' => $title,
                 'type' => $type,
@@ -77,7 +80,7 @@ class MediaAdminController extends Controller
 
     public function destroy(Media $media)
     {
-        // Optionnel : suppression dans Cloudinary si tu stockes le public_id
+        // Optionnel : suppression Cloudinary
         $media->delete();
         return redirect()->back()->with('success', 'Média supprimé.');
     }
