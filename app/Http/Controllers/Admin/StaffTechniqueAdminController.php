@@ -37,7 +37,7 @@ class StaffTechniqueAdminController extends Controller
         $data = $request->validate([
             'nom'          => 'required|string|max:255',
             'prenom'       => 'required|string|max:255',
-            'poste'        => 'nullable|string|max:255',
+            'role'        => 'nullable|string|max:255',
             'categorie_id' => 'required|exists:categories,id',
             'photo'        => 'nullable|image|max:2048',
         ]);
@@ -64,7 +64,7 @@ class StaffTechniqueAdminController extends Controller
         $data = $request->validate([
             'nom'          => 'required|string|max:255',
             'prenom'       => 'required|string|max:255',
-            'poste'        => 'nullable|string|max:255',
+            'role'        => 'nullable|string|max:255',
             'categorie_id' => 'required|exists:categories,id',
             'photo'        => 'nullable|image|max:2048',
         ]);

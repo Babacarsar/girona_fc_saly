@@ -32,7 +32,7 @@
         {{-- Rôle (Poste) --}}
         <div class="mb-3">
             <label class="form-label">Rôle</label>
-            <input type="text" name="poste" class="form-control" value="{{ old('poste') }}" required>
+            <input type="text" name="role" class="form-control" value="{{ old('role') }}" required>
         </div>
 
         {{-- Catégorie --}}

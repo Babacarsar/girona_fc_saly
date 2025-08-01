@@ -65,7 +65,7 @@
                         <td>{{ $membre->id }}</td>
                         <td>{{ $membre->nom }}</td>
                         <td>{{ $membre->prenom }}</td>
-                        <td>{{ $membre->poste ?? '-' }}</td>
+                        <td>{{ $membre->role ?? '-' }}</td>
                         <td>{{ $membre->categorie->nom ?? 'N/A' }}</td>
                         <td>
                             <div class="d-flex gap-2">
