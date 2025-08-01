@@ -22,13 +22,13 @@ class MediaAdminController extends Controller
 public function store(Request $request)
 {
     $validated = $request->validate([
-        'titre' => 'nullable|string|max:255',
+        'title' => 'nullable|string|max:255',
         'type' => 'required|in:image,video',
         'url' => 'required|url'
     ]);
 
     Media::create([
-        'title' => $validated['titre'],
+        'title' => $validated['title'],
         'type' => $validated['type'],
         'file_path' => $validated['url'],
     ]);

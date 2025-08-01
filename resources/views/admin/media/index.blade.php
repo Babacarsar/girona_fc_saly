@@ -27,17 +27,17 @@
                 @forelse($media as $item)
                     <tr>
                         <td>{{ $item->id }}</td>
-                        <td>{{ $item->titre ?? '---' }}</td>
+                        <td>{{ $item->title ?? '---' }}</td>
                         <td>
                             <span class="badge bg-secondary">{{ ucfirst($item->type) }}</span>
                         </td>
                         <td>
                             @if ($item->type === 'image')
-                                <img src="{{ $item->url }}" alt="Image" class="img-thumbnail" style="max-width: 120px;">
+                                <img src="{{ $item->file_path }}" alt="Image" class="img-thumbnail" style="max-width: 150px;">
                             @elseif ($item->type === 'video')
-                                <video width="160" height="100" controls>
-                                    <source src="{{ $item->url }}">
-                                    Votre navigateur ne supporte pas la vidéo.
+                                <video width="200" height="130" controls>
+                                    <source src="{{ $item->file_path }}" type="video/mp4">
+                                    Votre navigateur ne supporte pas la lecture vidéo.
                                 </video>
                             @endif
                         </td>

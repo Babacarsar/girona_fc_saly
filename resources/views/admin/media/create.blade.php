@@ -25,7 +25,7 @@
         {{-- Titre --}}
         <div class="mb-3">
             <label class="form-label">Titre (facultatif)</label>
-            <input type="text" name="titre" class="form-control" placeholder="Titre du média" value="{{ old('titre') }}">
+            <input type="text" name="title" class="form-control" placeholder="Titre du média" value="{{ old('title') }}">
         </div>
 
         {{-- Type --}}
