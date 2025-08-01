@@ -4,11 +4,22 @@
 <div class="container mt-4">
     <h2 class="mb-4">✏️ Modifier un média</h2>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- Formulaire --}}
     <form action="{{ route('admin.media.update', $media->id) }}" method="POST">
         @csrf
         @method('PUT')
 
-        {{-- Titre (facultatif) --}}
+        {{-- Titre --}}
         <div class="mb-3">
             <label class="form-label">Titre <small class="text-muted">(facultatif)</small></label>
             <input type="text" name="title" value="{{ old('title', $media->title) }}" class="form-control" placeholder="Titre du média">
@@ -25,8 +36,21 @@
 
         {{-- URL Cloudinary --}}
         <div class="mb-3">
-            <label class="form-label">URL Cloudinary</label>
-            <input type="text" name="file_path" value="{{ old('file_path', $media->file_path) }}" class="form-control" required>
+            <label class="form-label">URL du fichier (Cloudinary)</label>
+            <input type="url" name="url" value="{{ old('url', $media->file_path) }}" class="form-control" required>
+            <small class="text-muted">Ex : https://res.cloudinary.com/toncloud/image/upload/v... </small>
+        </div>
+
+        {{-- Aperçu --}}
+        <div class="mb-4">
+            @if($media->type === 'image')
+                <img src="{{ $media->file_path }}" alt="Aperçu" class="img-thumbnail" style="max-width: 200px;">
+            @elseif($media->type === 'video')
+                <video width="300" controls>
+                    <source src="{{ $media->file_path }}" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                </video>
+            @endif
         </div>
 
         <button type="submit" class="btn btn-primary">💾 Mettre à jour</button>

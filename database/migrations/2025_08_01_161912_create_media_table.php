@@ -8,9 +8,16 @@ return new class extends Migration {
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->string('titre')->nullable(); // ou 'title' si tu préfères en anglais
-            $table->string('url'); // <- pour stocker l'URL Cloudinary
+
+            // Facultatif : titre de l'image ou vidéo
+            $table->string('title')->nullable();
+
+            // Type : image ou vidéo
             $table->enum('type', ['image', 'video']);
+
+            // URL sécurisée de Cloudinary
+            $table->string('file_path'); // ou `url`
+
             $table->timestamps();
         });
     }
