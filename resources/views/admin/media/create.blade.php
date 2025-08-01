@@ -28,8 +28,8 @@
                     <input type="file" name="files[]" class="form-control" accept="image/*,video/*" required>
                 </div>
                 <div class="col-md-5">
-                    <label class="form-label">Titre</label>
-                    <input type="text" name="titles[]" class="form-control" placeholder="Titre du média" required>
+                    <label class="form-label">Titre <small class="text-muted">(facultatif)</small></label>
+                    <input type="text" name="titles[]" class="form-control" placeholder="Titre du média">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <button type="button" class="btn btn-danger btn-remove" onclick="removeUploadField(this)">X</button>
@@ -58,7 +58,7 @@
                 <input type="file" name="files[]" class="form-control" accept="image/*,video/*" required>
             </div>
             <div class="col-md-5">
-                <input type="text" name="titles[]" class="form-control" placeholder="Titre du média" required>
+                <input type="text" name="titles[]" class="form-control" placeholder="Titre du média">
             </div>
             <div class="col-md-2 d-flex align-items-end">
                 <button type="button" class="btn btn-danger btn-remove" onclick="removeUploadField(this)">X</button>

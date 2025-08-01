@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model
 {
-    use HasFactory;
-       protected $fillable = ['title', 'file_path', 'type'];
+    // Table associée (optionnel si le nom est 'media')
+    protected $table = 'media';
+
+    // Champs pouvant être remplis
+    protected $fillable = [
+        'titre',  // ou 'title' si tu as gardé l'anglais
+        'url',
+        'type',   // 'image' ou 'video'
+    ];
 }
