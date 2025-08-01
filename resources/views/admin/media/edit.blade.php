@@ -4,25 +4,14 @@
 <div class="container mt-4">
     <h2 class="mb-4">✏️ Modifier un média</h2>
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    {{-- Formulaire --}}
     <form action="{{ route('admin.media.update', $media->id) }}" method="POST">
         @csrf
         @method('PUT')
 
-        {{-- Titre --}}
+        {{-- Titre (facultatif) --}}
         <div class="mb-3">
             <label class="form-label">Titre <small class="text-muted">(facultatif)</small></label>
-            <input type="text" name="title" value="{{ old('title', $media->title) }}" class="form-control" placeholder="Titre du média">
+            <input type="text" name="titre" value="{{ old('titre', $media->titre) }}" class="form-control" placeholder="Titre du média">
         </div>
 
         {{-- Type --}}
@@ -34,22 +23,24 @@
             </select>
         </div>
 
-        {{-- URL Cloudinary --}}
+        {{-- URL (Cloudinary) --}}
         <div class="mb-3">
-            <label class="form-label">URL du fichier (Cloudinary)</label>
-            <input type="url" name="url" value="{{ old('url', $media->file_path) }}" class="form-control" required>
-            <small class="text-muted">Ex : https://res.cloudinary.com/toncloud/image/upload/v... </small>
-        </div>
-
-        {{-- Aperçu --}}
-        <div class="mb-4">
-            @if($media->type === 'image')
-                <img src="{{ $media->file_path }}" alt="Aperçu" class="img-thumbnail" style="max-width: 200px;">
-            @elseif($media->type === 'video')
-                <video width="300" controls>
-                    <source src="{{ $media->file_path }}" type="video/mp4">
-                    Votre navigateur ne supporte pas la vidéo.
-                </video>
+            <label class="form-label">URL Cloudinary</label>
+            <div class="input-group">
+                <input type="text" name="url" id="url_input" value="{{ old('url', $media->url) }}" class="form-control" required>
+                <button type="button" class="btn btn-outline-primary" id="upload_widget_btn">Changer le fichier</button>
+            </div>
+            @if ($media->type === 'image')
+                <div class="mt-3">
+                    <img src="{{ $media->url }}" alt="image actuelle" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+            @elseif ($media->type === 'video')
+                <div class="mt-3">
+                    <video width="320" height="180" controls>
+                        <source src="{{ $media->url }}">
+                        Votre navigateur ne supporte pas la vidéo.
+                    </video>
+                </div>
             @endif
         </div>
 
@@ -57,4 +48,22 @@
         <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">Annuler</a>
     </form>
 </div>
+
+{{-- Cloudinary Upload Widget --}}
+<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+<script>
+  const widget = cloudinary.createUploadWidget({
+    cloudName: 'df2jerxfy',
+    uploadPreset: 'default_preset', // Remplace par le tien
+    multiple: false
+  }, (error, result) => {
+    if (!error && result && result.event === "success") {
+      document.getElementById("url_input").value = result.info.secure_url;
+    }
+  });
+
+  document.getElementById("upload_widget_btn").addEventListener("click", function () {
+    widget.open();
+  }, false);
+</script>
 @endsection

@@ -2,9 +2,8 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>📤 Ajouter des médias (images ou vidéos)</h2>
+    <h2>Ajouter un média</h2>
 
-    {{-- Messages d’erreur --}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">
@@ -15,65 +14,58 @@
         </div>
     @endif
 
-    {{-- Message succès --}}
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    {{-- Formulaire --}}
-    <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.media.store') }}" method="POST">
         @csrf
 
-        <div id="upload-container">
-            <div class="upload-group row mb-3">
-                <div class="col-md-5">
-                    <label class="form-label">Fichier</label>
-                    <input type="file" name="files[]" class="form-control" accept="image/*,video/*" required>
-                </div>
-                <div class="col-md-5">
-                    <label class="form-label">Titre <small class="text-muted">(facultatif)</small></label>
-                    <input type="text" name="titles[]" class="form-control" placeholder="Titre du média">
-                </div>
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger btn-remove" onclick="removeUploadField(this)">X</button>
-                </div>
+        {{-- Titre --}}
+        <div class="mb-3">
+            <label class="form-label">Titre (facultatif)</label>
+            <input type="text" name="titre" class="form-control" placeholder="Titre du média">
+        </div>
+
+        {{-- Type --}}
+        <div class="mb-3">
+            <label class="form-label">Type</label>
+            <select name="type" class="form-select" required>
+                <option value="">-- Sélectionner --</option>
+                <option value="image">Image</option>
+                <option value="video">Vidéo</option>
+            </select>
+        </div>
+
+        {{-- URL (rempli automatiquement par Cloudinary) --}}
+        <div class="mb-3">
+            <label class="form-label">Fichier (URL Cloudinary)</label>
+            <div class="input-group">
+                <input type="text" name="url" id="url_input" class="form-control" placeholder="URL du média" readonly required>
+                <button type="button" class="btn btn-outline-primary" id="upload_widget_btn">Uploader</button>
             </div>
         </div>
 
-        <div class="mb-3">
-            <button type="button" class="btn btn-outline-primary" onclick="addUploadField()">+ Ajouter un autre média</button>
-        </div>
-
-        <div class="mb-3">
-            <button type="submit" class="btn btn-success">✅ Enregistrer</button>
-            <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">Annuler</a>
-        </div>
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">Annuler</a>
     </form>
 </div>
 
-{{-- JS pour ajouter/supprimer des champs dynamiques --}}
+{{-- Cloudinary Widget --}}
+<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 <script>
-    function addUploadField() {
-        const container = document.getElementById('upload-container');
-        const group = document.createElement('div');
-        group.classList.add('upload-group', 'row', 'mb-3');
-        group.innerHTML = `
-            <div class="col-md-5">
-                <input type="file" name="files[]" class="form-control" accept="image/*,video/*" required>
-            </div>
-            <div class="col-md-5">
-                <input type="text" name="titles[]" class="form-control" placeholder="Titre du média">
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-danger btn-remove" onclick="removeUploadField(this)">X</button>
-            </div>
-        `;
-        container.appendChild(group);
+  const widget = cloudinary.createUploadWidget({
+    cloudName: 'df2jerxfy',
+    uploadPreset: 'default_preset', // 🔁 À remplacer par le tien
+    multiple: false
+  }, (error, result) => {
+    if (!error && result && result.event === "success") {
+      document.getElementById("url_input").value = result.info.secure_url;
     }
+  });
 
-    function removeUploadField(button) {
-        const group = button.closest('.upload-group');
-        group.remove();
-    }
+  document.getElementById("upload_widget_btn").addEventListener("click", function () {
+    widget.open();
+  }, false);
 </script>
 @endsection
