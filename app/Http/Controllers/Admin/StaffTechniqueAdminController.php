@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StaffTechnique;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class StaffTechniqueAdminController extends Controller
 {
@@ -33,12 +34,19 @@ class StaffTechniqueAdminController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'nom'          => 'required|string|max:255',
+            'prenom'       => 'required|string|max:255',
+            'poste'        => 'nullable|string|max:255',
+            'categorie_id' => 'required|exists:categories,id',
+            'photo'        => 'nullable|image|max:2048',
+        ]);
 
         if ($request->hasFile('photo')) {
-            $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('upload/staff'), $filename);
-            $data['photo'] = 'upload/staff/' . $filename;
+            $uploaded = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' => 'staff_technique'
+            ]);
+            $data['photo'] = $uploaded->getSecurePath();
         }
 
         StaffTechnique::create($data);
@@ -53,12 +61,19 @@ class StaffTechniqueAdminController extends Controller
 
     public function update(Request $request, StaffTechnique $staff)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'nom'          => 'required|string|max:255',
+            'prenom'       => 'required|string|max:255',
+            'poste'        => 'nullable|string|max:255',
+            'categorie_id' => 'required|exists:categories,id',
+            'photo'        => 'nullable|image|max:2048',
+        ]);
 
         if ($request->hasFile('photo')) {
-            $filename = time() . '_' . $request->photo->getClientOriginalName();
-            $request->photo->move(public_path('upload/staff'), $filename);
-            $data['photo'] = 'upload/staff/' . $filename;
+            $uploaded = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' => 'staff_technique'
+            ]);
+            $data['photo'] = $uploaded->getSecurePath();
         }
 
         $staff->update($data);
