@@ -4,6 +4,16 @@
 <div class="container mt-4">
     <h2 class="mb-4">✏️ Modifier un média</h2>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('admin.media.update', $media->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -17,30 +27,32 @@
         {{-- Type --}}
         <div class="mb-3">
             <label class="form-label">Type</label>
-            <select name="type" class="form-select" required>
+            <select name="type" id="type_input" class="form-select" required>
+                <option value="">-- Sélectionner --</option>
                 <option value="image" {{ $media->type === 'image' ? 'selected' : '' }}>Image</option>
                 <option value="video" {{ $media->type === 'video' ? 'selected' : '' }}>Vidéo</option>
             </select>
         </div>
 
-        {{-- URL (Cloudinary) --}}
+        {{-- URL Cloudinary --}}
         <div class="mb-3">
-            <label class="form-label">URL Cloudinary</label>
+            <label class="form-label">Fichier (Cloudinary)</label>
             <div class="input-group">
-                <input type="text" name="url" id="url_input" value="{{ old('url', $media->url) }}" class="form-control" required>
-                <button type="button" class="btn btn-outline-primary" id="upload_widget_btn">Changer le fichier</button>
+                <input type="text" name="url" id="url_input" class="form-control" value="{{ old('url', $media->url) }}" required>
+                <button type="button" class="btn btn-outline-primary" id="upload_widget_btn">Uploader</button>
             </div>
+            <small class="text-muted">Si tu réuploades un fichier, l’URL et le type seront mis à jour automatiquement.</small>
+        </div>
+
+        {{-- Aperçu --}}
+        <div class="mb-4">
             @if ($media->type === 'image')
-                <div class="mt-3">
-                    <img src="{{ $media->url }}" alt="image actuelle" class="img-thumbnail" style="max-width: 200px;">
-                </div>
+                <img src="{{ $media->url }}" alt="Image actuelle" class="img-thumbnail" style="max-width: 300px;">
             @elseif ($media->type === 'video')
-                <div class="mt-3">
-                    <video width="320" height="180" controls>
-                        <source src="{{ $media->url }}">
-                        Votre navigateur ne supporte pas la vidéo.
-                    </video>
-                </div>
+                <video width="320" height="240" controls>
+                    <source src="{{ $media->url }}">
+                    Votre navigateur ne supporte pas la vidéo.
+                </video>
             @endif
         </div>
 
@@ -49,16 +61,21 @@
     </form>
 </div>
 
-{{-- Cloudinary Upload Widget --}}
+{{-- Cloudinary Widget --}}
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 <script>
   const widget = cloudinary.createUploadWidget({
     cloudName: 'df2jerxfy',
-    uploadPreset: 'default_preset', // Remplace par le tien
-    multiple: false
+    uploadPreset: 'girona_unsigned', // ⬅ Ton preset Cloudinary NON signé
+    folder: 'media_girona',
+    multiple: false,
+    resourceType: 'auto'
   }, (error, result) => {
     if (!error && result && result.event === "success") {
       document.getElementById("url_input").value = result.info.secure_url;
+      document.getElementById("type_input").value = result.info.resource_type;
+    } else if (error) {
+      alert("Erreur lors de l'upload : " + error.message);
     }
   });
 
