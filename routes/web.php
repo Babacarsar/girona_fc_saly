@@ -23,9 +23,7 @@ use App\Http\Controllers\Admin\MediaAdminController;
 
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
-});
+    Route::get('/', [DashboardAdminController::class, 'index'])->name('dashboard');
 
 Route::prefix('admin')->group(function () {
     Route::get('/actualites', [ActualiteAdminController::class, 'index'])->name('admin.actualites.index');
