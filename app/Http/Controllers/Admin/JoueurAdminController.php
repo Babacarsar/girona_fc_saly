@@ -37,6 +37,7 @@ class JoueurAdminController extends Controller
         $data = $request->validate([
     'nom'         => 'required|string|max:255',
     'prenom'      => 'required|string|max:255', // ✅ manquant
+    'age'          => 'required|integer|min:1',
     'categorie_id'=> 'required|exists:categories,id',
     'poste'       => 'nullable|string|max:255',
     'numero'      => 'nullable|integer',
