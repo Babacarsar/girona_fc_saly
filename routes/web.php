@@ -54,14 +54,21 @@ Route::prefix('admin')->group(function () {
     Route::delete('/staff/{staff}', [StaffTechniqueAdminController::class, 'destroy'])->name('admin.staff.destroy');
 });
 
+Route::prefix('admin')->group(function () {
+    Route::get('/media', [MediaAdminController::class, 'index'])->name('admin.media.index');
+    Route::get('/media/create', [MediaAdminController::class, 'create'])->name('admin.media.create');
+    Route::post('/media', [MediaAdminController::class, 'store'])->name('admin.media.store');
+    Route::get('/media/{media}/edit', [MediaAdminController::class, 'edit'])->name('admin.media.edit');
+    Route::put('/media/{media}', [MediaAdminController::class, 'update'])->name('admin.media.update');
+    Route::delete('/media/{media}', [MediaAdminController::class, 'destroy'])->name('admin.media.destroy');
+});
+
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('categories', CategorieAdminController::class);
 });
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('media', MediaAdminController::class);
-});
 
 Route::get('/test-cloud', function () {
     return config('cloudinary');

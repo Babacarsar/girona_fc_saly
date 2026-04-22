@@ -33,7 +33,7 @@
         <div class="mb-3">
             <label class="form-label">Date de publication (optionnelle)</label>
             <input type="date" name="date_publication" class="form-control"
-                   value="{{ old('date_publication', $actualite->date_publication ? $actualite->date_publication->format('Y-m-d') : '') }}">
+                   value="{{ old('date_publication', $actualite->date_publication ? \Carbon\Carbon::parse($actualite->date_publication)->format('Y-m-d') : '') }}">
             @error('date_publication') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
