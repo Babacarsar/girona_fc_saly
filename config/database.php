@@ -65,12 +65,13 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            // Use DB_* vars on Railway (do not set DATABASE_URL on the web service).
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            // Railway: prefer DB_* (reference Postgres in the dashboard). PG* fallbacks match
+            // variables copied directly from the Postgres service (PGHOST, PGDATABASE, etc.).
+            'host' => env('DB_HOST', env('PGHOST', '127.0.0.1')),
+            'port' => env('DB_PORT', env('PGPORT', '5432')),
+            'database' => env('DB_DATABASE', env('PGDATABASE', 'forge')),
+            'username' => env('DB_USERNAME', env('PGUSER', env('POSTGRES_USER', 'forge'))),
+            'password' => env('DB_PASSWORD', env('PGPASSWORD', '')),
             // Omit charset: PostgreSQL uses server default (UTF8). Avoids invalid utf8mb4 from env/cache.
             'prefix' => '',
             'prefix_indexes' => true,
