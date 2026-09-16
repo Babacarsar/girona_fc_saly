@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ActualiteAdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategorieAdminController;
 use App\Http\Controllers\Admin\DashboardAdminController;
+use App\Http\Controllers\Admin\DemoSeedAdminController;
 use App\Http\Controllers\Admin\EditorUploadController;
 use App\Http\Controllers\Admin\JoueurAdminController;
 use App\Http\Controllers\Admin\MatchAdminController;
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/editor/upload', [EditorUploadController::class, 'store'])->name('admin.editor.upload');
 
     Route::get('/', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/demo-seed', [DemoSeedAdminController::class, 'store'])->name('admin.demo_seed');
 
     Route::prefix('admin')->group(function () {
         Route::get('/actualites', [ActualiteAdminController::class, 'index'])->name('admin.actualites.index');

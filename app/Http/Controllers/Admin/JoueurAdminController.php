@@ -71,6 +71,7 @@ class JoueurAdminController extends Controller
     'poste'       => 'nullable|string|max:255',
     'numero'      => 'nullable|integer',
     'photo'       => 'nullable|image|max:2048',
+    'photo_url'   => 'nullable|url|max:500',
 ]);
 
         if ($request->hasFile('photo')) {
@@ -78,8 +79,11 @@ class JoueurAdminController extends Controller
                 'folder' => 'joueurs_foot'
             ]);
             $data['photo'] = $uploaded->getSecurePath();
+        } elseif ($request->filled('photo_url')) {
+            $data['photo'] = $request->input('photo_url');
         }
 
+        unset($data['photo_url']);
         $data['ordre'] = (int) Joueur::max('ordre') + 1;
         Joueur::create($data);
         return redirect()->route('admin.joueurs.index')->with('success', 'Joueur ajouté avec succès.');
@@ -100,6 +104,7 @@ class JoueurAdminController extends Controller
     'poste'       => 'nullable|string|max:255',
     'numero'      => 'nullable|integer',
     'photo'       => 'nullable|image|max:2048',
+    'photo_url'   => 'nullable|url|max:500',
 ]);
 
         if ($request->hasFile('photo')) {
@@ -107,8 +112,11 @@ class JoueurAdminController extends Controller
                 'folder' => 'joueurs_foot'
             ]);
             $data['photo'] = $uploaded->getSecurePath();
+        } elseif ($request->filled('photo_url')) {
+            $data['photo'] = $request->input('photo_url');
         }
 
+        unset($data['photo_url']);
         $joueur->update($data);
         return redirect()->route('admin.joueurs.index')->with('success', 'Joueur mis à jour.');
     }

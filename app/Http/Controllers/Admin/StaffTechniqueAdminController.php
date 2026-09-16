@@ -58,6 +58,7 @@ class StaffTechniqueAdminController extends Controller
             'role'        => 'nullable|string|max:255',
             'categorie_id' => 'required|exists:categories,id',
             'photo'        => 'nullable|image|max:2048',
+            'photo_url'    => 'nullable|url|max:500',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -65,8 +66,11 @@ class StaffTechniqueAdminController extends Controller
                 'folder' => 'staff_technique'
             ]);
             $data['photo'] = $uploaded->getSecurePath();
+        } elseif ($request->filled('photo_url')) {
+            $data['photo'] = $request->input('photo_url');
         }
 
+        unset($data['photo_url']);
         StaffTechnique::create($data);
         return redirect()->route('admin.staff.index')->with('success', 'Membre du staff ajouté.');
     }
@@ -85,6 +89,7 @@ class StaffTechniqueAdminController extends Controller
             'role'        => 'nullable|string|max:255',
             'categorie_id' => 'required|exists:categories,id',
             'photo'        => 'nullable|image|max:2048',
+            'photo_url'    => 'nullable|url|max:500',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -92,8 +97,11 @@ class StaffTechniqueAdminController extends Controller
                 'folder' => 'staff_technique'
             ]);
             $data['photo'] = $uploaded->getSecurePath();
+        } elseif ($request->filled('photo_url')) {
+            $data['photo'] = $request->input('photo_url');
         }
 
+        unset($data['photo_url']);
         $staff->update($data);
         return redirect()->route('admin.staff.index')->with('success', 'Membre du staff mis à jour.');
     }
