@@ -16,8 +16,10 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Contenu</label>
-                <textarea name="contenu" class="form-control" rows="8" required placeholder="Rédigez votre article…">{{ old('contenu') }}</textarea>
+                <input type="hidden" name="contenu" id="contenu" value="{{ old('contenu') }}">
+                <trix-editor input="contenu" class="rich-editor"></trix-editor>
             </div>
+            @include('admin.partials.rich-editor')
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Auteur</label>

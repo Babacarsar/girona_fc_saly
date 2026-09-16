@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{{ asset('css/admin.css') }}?v=1" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}?v=2" rel="stylesheet">
     @stack('styles')
 </head>
 <body class="admin-app">
@@ -20,7 +20,7 @@
     <aside class="admin-sidebar" id="adminSidebar">
         <div class="admin-sidebar__brand">
             <a href="{{ route('admin.dashboard') }}" class="admin-sidebar__logo">
-                <div class="admin-sidebar__emblem">GS</div>
+                <img src="{{ asset('images/girona-logo.png') }}" alt="" class="admin-sidebar__logo-img" width="48" height="48">
                 <div>
                     <p class="admin-sidebar__title">Girona de Saly</p>
                     <p class="admin-sidebar__subtitle">Centre de contrôle</p>
@@ -64,8 +64,25 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="admin-topbar__meta ms-auto">
-                <span class="admin-badge-live">Production</span>
-                <span class="text-muted small d-none d-md-inline">{{ now()->translatedFormat('l j F Y') }}</span>
+                <span class="admin-badge-live d-none d-sm-inline-flex">Production</span>
+                <span class="text-muted small d-none d-lg-inline">{{ now()->translatedFormat('l j F Y') }}</span>
+                <div class="dropdown">
+                    <button class="btn btn-light btn-sm dropdown-toggle admin-user-btn" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-1"></i>{{ Auth::user()->name }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                        <li><span class="dropdown-item-text small text-muted">{{ Auth::user()->email }}</span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </header>
 

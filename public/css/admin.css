@@ -61,18 +61,56 @@ body.admin-app {
   color: inherit;
 }
 
-.admin-sidebar__emblem {
+.admin-sidebar__logo-img {
   width: 48px;
   height: 48px;
   border-radius: 14px;
+  object-fit: cover;
   background: var(--girona-white);
-  color: var(--girona-red);
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: -0.02em;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.admin-user-btn {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a0508 0%, #9b0c24 50%, #fde8ec 100%);
+  padding: 1.5rem;
+}
+
+.admin-login-wrap {
+  width: 100%;
+  max-width: 420px;
+}
+
+.admin-login-card {
+  background: var(--girona-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+}
+
+.admin-login-logo {
+  width: 88px;
+  height: 88px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-login-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .admin-sidebar__title {
