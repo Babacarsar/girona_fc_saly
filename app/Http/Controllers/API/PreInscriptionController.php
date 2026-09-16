@@ -27,11 +27,18 @@ class PreInscriptionController extends Controller
 
         $notifyTo = env('ADMIN_EMAIL');
         if ($notifyTo) {
-            try {
-                Mail::to($notifyTo)->send(new PreInscriptionNotification($inscription));
-            } catch (\Throwable) {
-                // Still accept the registration if mail fails.
-            }
+            $inscriptionId = $inscription->id;
+            dispatch(function () use ($notifyTo, $inscriptionId) {
+                $record = PreInscription::with('categorie')->find($inscriptionId);
+                if (! $record) {
+                    return;
+                }
+                try {
+                    Mail::to($notifyTo)->send(new PreInscriptionNotification($record));
+                } catch (\Throwable) {
+                    // Registration is already saved.
+                }
+            })->afterResponse();
         }
 
         return response()->json(['message' => 'Pré-inscription enregistrée.', 'id' => $inscription->id], 201);

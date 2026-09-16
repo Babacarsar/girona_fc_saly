@@ -44,7 +44,11 @@ class ActualiteAdminController extends Controller
             ]);
             $data['image'] = $uploaded->getSecurePath();
             $data['image_public_id'] = $uploaded->getPublicId();
+        } elseif ($request->filled('image_url')) {
+            $data['image'] = $request->input('image_url');
         }
+
+        unset($data['image_url']);
 
         if (! isset($data['ordre'])) {
             $data['ordre'] = (int) Actualite::max('ordre') + 1;
@@ -73,7 +77,11 @@ class ActualiteAdminController extends Controller
             ]);
             $data['image'] = $uploaded->getSecurePath();
             $data['image_public_id'] = $uploaded->getPublicId();
+        } elseif ($request->filled('image_url')) {
+            $data['image'] = $request->input('image_url');
         }
+
+        unset($data['image_url']);
 
         $actualite->update($data);
 
@@ -109,6 +117,7 @@ class ActualiteAdminController extends Controller
             'auteur' => 'nullable|string|max:100',
             'date_publication' => 'nullable|date',
             'image' => 'nullable|image|max:2048',
+            'image_url' => 'nullable|url|max:500',
             'statut' => 'required|in:draft,published',
             'ordre' => 'nullable|integer|min:0',
             'a_la_une' => 'nullable|boolean',
