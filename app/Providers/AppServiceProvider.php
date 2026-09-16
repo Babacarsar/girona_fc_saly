@@ -19,10 +19,11 @@ class AppServiceProvider extends ServiceProvider
                 if (getenv('DB_CHARSET') === 'utf8mb4') {
                     putenv('DB_CHARSET=UTF8');
                 }
+                $pgsql = config('database.connections.pgsql', []);
+                unset($pgsql['charset'], $pgsql['url']);
                 config([
                     'database.default' => 'pgsql',
-                    'database.connections.pgsql.charset' => 'utf8',
-                    'database.connections.pgsql.url' => null,
+                    'database.connections.pgsql' => $pgsql,
                 ]);
             }
         });
