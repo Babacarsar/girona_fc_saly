@@ -1,5 +1,14 @@
 <?php
 
+$cloudName = env('CLOUDINARY_CLOUD_NAME');
+$apiKey = env('CLOUDINARY_API_KEY', env('CLOUDINARY_KEY'));
+$apiSecret = env('CLOUDINARY_API_SECRET', env('CLOUDINARY_SECRET'));
+
+$cloudUrl = env('CLOUDINARY_URL');
+if (! $cloudUrl && $cloudName && $apiKey && $apiSecret) {
+    $cloudUrl = sprintf('cloudinary://%s:%s@%s', $apiKey, $apiSecret, $cloudName);
+}
+
 return [
 
     /*
@@ -7,17 +16,21 @@ return [
     | Configuration Cloudinary
     |--------------------------------------------------------------------------
     |
-    | Ces variables sont chargées automatiquement à partir du fichier .env
-    | (ou des variables Railway en production). Elles permettent à Cloudinary
-    | de fonctionner avec ton application.
+    | Le SDK Laravel attend surtout cloud_url (CLOUDINARY_URL ou les 3 variables).
     |
     */
 
-    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+    'notification_url' => env('CLOUDINARY_NOTIFICATION_URL'),
 
-    'api_key'    => env('CLOUDINARY_API_KEY'),
+    'cloud_url' => $cloudUrl,
 
-    'api_secret' => env('CLOUDINARY_API_SECRET'),
+    'cloud_name' => $cloudName,
 
-    'secure'     => true,
+    'api_key' => $apiKey,
+
+    'api_secret' => $apiSecret,
+
+    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
+
+    'secure' => true,
 ];
