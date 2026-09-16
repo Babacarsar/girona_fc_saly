@@ -19,8 +19,17 @@ class StaffTechniqueAdminController extends Controller
             $staff->where('categorie_id', $request->categorie_id);
         }
 
+        if ($request->filled('q')) {
+            $q = '%'.$request->q.'%';
+            $staff->where(function ($query) use ($q) {
+                $query->where('nom', 'ilike', $q)
+                    ->orWhere('prenom', 'ilike', $q)
+                    ->orWhere('role', 'ilike', $q);
+            });
+        }
+
         return view('admin.staff.index', [
-            'staff' => $staff->get(),
+            'staff' => $staff->orderBy('nom')->get(),
             'categories' => $categories,
             'selectedCategorie' => $request->categorie_id
         ]);

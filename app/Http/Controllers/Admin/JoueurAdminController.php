@@ -19,8 +19,17 @@ class JoueurAdminController extends Controller
             $joueurs->where('categorie_id', $request->categorie_id);
         }
 
+        if ($request->filled('q')) {
+            $q = '%'.$request->q.'%';
+            $joueurs->where(function ($query) use ($q) {
+                $query->where('nom', 'ilike', $q)
+                    ->orWhere('prenom', 'ilike', $q)
+                    ->orWhere('poste', 'ilike', $q);
+            });
+        }
+
         return view('admin.joueurs.index', [
-            'joueurs' => $joueurs->get(),
+            'joueurs' => $joueurs->orderBy('nom')->get(),
             'categories' => $categories,
             'selectedCategorie' => $request->categorie_id
         ]);

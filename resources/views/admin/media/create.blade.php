@@ -1,80 +1,59 @@
 @extends('layouts.admin')
 
+@section('title', 'Nouveau média')
+
 @section('content')
-<div class="container mt-4">
-    <h2>Ajouter un média</h2>
+<x-admin.page-header title="Ajouter un média" description="Upload via le widget Cloudinary." breadcrumb='<a href="'.route('admin.media.index').'">Médias</a> / Création' />
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    {{-- FORMULAIRE --}}
-    <form action="{{ route('admin.media.store') }}" method="POST">
-        @csrf
-
-        {{-- Titre --}}
-        <div class="mb-3">
-            <label class="form-label">Titre (facultatif)</label>
-            <input type="text" name="title" class="form-control" placeholder="Titre du média" value="{{ old('title') }}">
-        </div>
-
-        {{-- Type --}}
-        <div class="mb-3">
-            <label class="form-label">Type</label>
-            <select name="type" id="type_input" class="form-select" required>
-                <option value="">-- Sélectionner --</option>
-                <option value="image">Image</option>
-                <option value="video">Vidéo</option>
-            </select>
-        </div>
-
-        {{-- URL Cloudinary --}}
-        <div class="mb-3">
-            <label class="form-label">Fichier (Cloudinary)</label>
-            <div class="input-group">
-                <input type="text" name="url" id="url_input" class="form-control" placeholder="URL du média" readonly required>
-                <button type="button" class="btn btn-outline-primary" id="upload_widget_btn">Uploader</button>
+<div class="admin-card col-lg-8">
+    <div class="admin-card__body admin-form">
+        <x-admin.validation-errors />
+        <form action="{{ route('admin.media.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label class="form-label">Titre</label>
+                <input type="text" name="title" class="form-control" value="{{ old('title') }}" placeholder="Optionnel">
             </div>
-        </div>
-
-        <button type="submit" class="btn btn-success">Enregistrer</button>
-        <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">Annuler</a>
-    </form>
+            <div class="mb-3">
+                <label class="form-label">Type</label>
+                <select name="type" id="type_input" class="form-select" required>
+                    <option value="">— Sélectionner après upload —</option>
+                    <option value="image">Image</option>
+                    <option value="video">Vidéo</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Fichier Cloudinary</label>
+                <div class="input-group">
+                    <input type="url" name="url" id="url_input" class="form-control" readonly required placeholder="Cliquez sur Uploader">
+                    <button type="button" class="btn btn-girona" id="upload_widget_btn"><i class="bi bi-cloud-upload"></i> Uploader</button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-girona">Enregistrer</button>
+            <a href="{{ route('admin.media.index') }}" class="btn btn-light">Annuler</a>
+        </form>
+    </div>
 </div>
+@endsection
 
-{{-- Widget Cloudinary --}}
+@push('scripts')
 <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 <script>
+    const cloudName = @json(config('cloudinary.cloud_name', ''));
     const widget = cloudinary.createUploadWidget({
-        cloudName: 'df2jerxfy', // 🔁 Remplace bien par ton cloudName
-        uploadPreset: 'girona_unsigned', // 🔁 Assure-toi qu’il est bien actif
+        cloudName: cloudName || 'df2jerxfy',
+        uploadPreset: 'girona_unsigned',
         folder: 'media_girona',
         multiple: false,
         resourceType: 'auto'
     }, (error, result) => {
-        if (!error && result && result.event === "success") {
-            const url = result.info.secure_url;
-            const type = result.info.resource_type; // image / video
-
-            document.getElementById("url_input").value = url;
-            document.getElementById("type_input").value = type;
+        if (!error && result?.event === 'success') {
+            document.getElementById('url_input').value = result.info.secure_url;
+            document.getElementById('type_input').value = result.info.resource_type === 'video' ? 'video' : 'image';
         } else if (error) {
-            alert("Erreur lors de l'upload : " + error.message);
+            alert('Erreur upload : ' + error.message);
         }
     });
-
-    document.getElementById("upload_widget_btn").addEventListener("click", function () {
-        widget.open();
-    }, false);
+    document.getElementById('upload_widget_btn')?.addEventListener('click', () => widget.open());
 </script>
-@endsection
+@endpush

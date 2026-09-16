@@ -1,54 +1,40 @@
 @extends('layouts.admin')
 
+@section('title', 'Catégories')
+
 @section('content')
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>📁 Liste des catégories</h2>
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-success">
-            ➕ Ajouter une catégorie
-        </a>
-    </div>
+<x-admin.page-header title="Catégories" description="U13, U15, Seniors… structurez l’académie.">
+    <x-slot:actions>
+        <a href="{{ route('admin.categories.create') }}" class="btn btn-girona"><i class="bi bi-plus-lg me-1"></i> Nouvelle catégorie</a>
+    </x-slot:actions>
+</x-admin.page-header>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th style="width: 60px;">#</th>
-                    <th>Nom</th>
-                    <th style="width: 200px;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($categories as $categorie)
-                    <tr>
-                        <td>{{ $categorie->id }}</td>
-                        <td>{{ $categorie->nom }}</td>
-                        <td>
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('admin.categories.edit', $categorie->id) }}" class="btn btn-sm btn-primary">
-                                    ✏️ Modifier
-                                </a>
-                                <form action="{{ route('admin.categories.destroy', $categorie->id) }}" method="POST" onsubmit="return confirm('Supprimer cette catégorie ?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        🗑️ Supprimer
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="text-center text-muted">Aucune catégorie trouvée.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+<div class="admin-card">
+    <div class="admin-card__body p-0">
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead><tr><th>#</th><th>Nom</th><th class="text-end">Actions</th></tr></thead>
+                <tbody>
+                    @forelse($categories as $categorie)
+                        <tr>
+                            <td><span class="text-muted">{{ $categorie->id }}</span></td>
+                            <td class="fw-semibold">{{ $categorie->nom }}</td>
+                            <td class="text-end">
+                                <div class="admin-actions justify-content-end">
+                                    <a href="{{ route('admin.categories.edit', $categorie) }}" class="btn btn-sm btn-girona-outline"><i class="bi bi-pencil"></i></a>
+                                    <form action="{{ route('admin.categories.destroy', $categorie) }}" method="POST" class="d-inline">
+                                        @csrf @method('DELETE')
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-admin-delete="Supprimer la catégorie « {{ $categorie->nom }} » ?"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="3"><div class="admin-empty"><i class="bi bi-layers"></i>Aucune catégorie.</div></td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection
