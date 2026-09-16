@@ -14,6 +14,7 @@ use Cloudinary\Api\Exception\ApiError;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class ClubDemoSeeder extends Seeder
 {
@@ -52,8 +53,21 @@ class ClubDemoSeeder extends Seeder
             return ['url' => $sourceUrl, 'public_id' => null];
         }
 
+        $tempFile = null;
+
         try {
-            $uploaded = Cloudinary::upload($sourceUrl, [
+            $filePath = $sourceUrl;
+            if (str_starts_with($sourceUrl, 'http://') || str_starts_with($sourceUrl, 'https://')) {
+                $response = Http::timeout(30)->get($sourceUrl);
+                if (! $response->successful()) {
+                    return ['url' => $sourceUrl, 'public_id' => null];
+                }
+                $tempFile = tempnam(sys_get_temp_dir(), 'girona_demo_');
+                file_put_contents($tempFile, $response->body());
+                $filePath = $tempFile;
+            }
+
+            $uploaded = Cloudinary::upload($filePath, [
                 'folder' => $folder,
                 'public_id' => $publicId,
                 'overwrite' => true,
@@ -66,6 +80,10 @@ class ClubDemoSeeder extends Seeder
             ];
         } catch (ApiError|\Throwable) {
             return ['url' => $sourceUrl, 'public_id' => null];
+        } finally {
+            if ($tempFile && is_file($tempFile)) {
+                @unlink($tempFile);
+            }
         }
     }
 
