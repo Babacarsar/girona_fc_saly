@@ -14,6 +14,8 @@ class DemoSeedAdminController extends Controller
             'confirm' => 'required|in:demo',
         ]);
 
+        set_time_limit(300);
+
         (new ClubDemoSeeder)->run();
 
         return redirect()->route('admin.dashboard')->with('success', 'Données de démonstration chargées (sans écraser les enregistrements existants par module).');
