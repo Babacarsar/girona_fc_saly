@@ -14,7 +14,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->booting(function () {
+            if (getenv('DB_CONNECTION') === 'pgsql') {
+                config([
+                    'database.default' => 'pgsql',
+                    'database.connections.pgsql.charset' => 'utf8',
+                ]);
+            }
+        });
     }
 
     /**
@@ -26,9 +33,9 @@ class AppServiceProvider extends ServiceProvider
 
 public function boot()
 {
-    if (env('APP_ENV') === 'production') {
+    if (config('app.env') === 'production') {
         URL::forceScheme('https');
-   }
+    }
    ini_set('post_max_size', '50M');
 ini_set('upload_max_filesize', '50M');
 }
