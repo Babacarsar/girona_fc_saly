@@ -1,61 +1,44 @@
 @extends('layouts.admin')
 
+@section('title', 'Modifier actualité')
+
 @section('content')
-<div class="container mt-4">
-    <h2>✏️ Modifier une actualité</h2>
+<x-admin.page-header title="Modifier l’actualité" breadcrumb='<a href="'.route('admin.actualites.index').'">Actualités</a> / Édition' />
 
-    <form action="{{ route('admin.actualites.update', $actualite->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-
-        {{-- Titre --}}
-        <div class="mb-3">
-            <label class="form-label">Titre</label>
-            <input type="text" name="titre" class="form-control" value="{{ old('titre', $actualite->titre) }}" required>
-            @error('titre') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
-
-        {{-- Contenu --}}
-        <div class="mb-3">
-            <label class="form-label">Contenu</label>
-            <textarea name="contenu" class="form-control" rows="5" required>{{ old('contenu', $actualite->contenu) }}</textarea>
-            @error('contenu') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
-
-        {{-- Auteur --}}
-        <div class="mb-3">
-            <label class="form-label">Auteur (optionnel)</label>
-            <input type="text" name="auteur" class="form-control" value="{{ old('auteur', $actualite->auteur) }}">
-            @error('auteur') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
-
-        {{-- Date de publication --}}
-        <div class="mb-3">
-            <label class="form-label">Date de publication (optionnelle)</label>
-            <input type="date" name="date_publication" class="form-control"
-                   value="{{ old('date_publication', $actualite->date_publication ? \Carbon\Carbon::parse($actualite->date_publication)->format('Y-m-d') : '') }}">
-            @error('date_publication') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
-
-        {{-- Image --}}
-        <div class="mb-3">
-            <label class="form-label">Nouvelle image (optionnelle)</label>
-            <input type="file" name="image" class="form-control">
-            @error('image') <small class="text-danger">{{ $message }}</small> @enderror
-
-            @if ($actualite->image)
-                <div class="mt-3">
-                    <img src="{{ $actualite->image }}" alt="Image actuelle" width="150" class="img-thumbnail">
-                    <p class="text-muted mb-0">Image actuelle (Cloudinary)</p>
+<div class="admin-card">
+    <div class="admin-card__body admin-form">
+        <form action="{{ route('admin.actualites.update', $actualite) }}" method="POST" enctype="multipart/form-data">
+            @csrf @method('PUT')
+            <div class="mb-3">
+                <label class="form-label">Titre</label>
+                <input type="text" name="titre" class="form-control form-control-lg" value="{{ old('titre', $actualite->titre) }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contenu</label>
+                <textarea name="contenu" class="form-control" rows="8" required>{{ old('contenu', $actualite->contenu) }}</textarea>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Auteur</label>
+                    <input type="text" name="auteur" class="form-control" value="{{ old('auteur', $actualite->auteur) }}">
                 </div>
-            @endif
-        </div>
-
-        {{-- Boutons --}}
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">💾 Mettre à jour</button>
-            <a href="{{ route('admin.actualites.index') }}" class="btn btn-secondary">Annuler</a>
-        </div>
-    </form>
+                <div class="col-md-6">
+                    <label class="form-label">Date de publication</label>
+                    <input type="date" name="date_publication" class="form-control"
+                           value="{{ old('date_publication', $actualite->date_publication ? \Carbon\Carbon::parse($actualite->date_publication)->format('Y-m-d') : '') }}">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Image</label>
+                @if ($actualite->image)
+                    <img src="{{ $actualite->image }}" alt="" class="rounded mb-3 d-block" style="max-width:200px">
+                @endif
+                <input type="file" name="image" class="form-control" accept="image/*" data-image-preview="actuEditPreview">
+                <img id="actuEditPreview" class="admin-upload-preview mt-3" alt="">
+            </div>
+            <button type="submit" class="btn btn-girona">Mettre à jour</button>
+            <a href="{{ route('admin.actualites.index') }}" class="btn btn-light">Annuler</a>
+        </form>
+    </div>
 </div>
 @endsection

@@ -3,32 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Joueur;
-use App\Models\StaffTechnique;
+use App\Models\Actualite;
 use App\Models\Categorie;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
+use App\Models\Joueur;
+use App\Models\Media;
+use App\Models\StaffTechnique;
 
 class DashboardAdminController extends Controller
 {
     public function index()
     {
-        // Statistiques globales
         $totalJoueurs = Joueur::count();
         $totalStaff = StaffTechnique::count();
         $totalCategories = Categorie::count();
+        $totalActualites = Actualite::count();
+        $totalMedia = Media::count();
 
-        // Joueurs par mois (12 derniers mois)
-
-        // Version MySQL :
-        // $joueursParMois = Joueur::where('created_at', '>=', now()->subMonths(12))
-        //     ->selectRaw("COUNT(*) as total, DATE_FORMAT(created_at, '%Y-%m') as mois")
-        //     ->groupBy('mois')
-        //     ->orderBy('mois')
-        //     ->pluck('total', 'mois')
-        //     ->toArray();
-
-        // Version PostgreSQL :
         $joueursParMois = Joueur::where('created_at', '>=', now()->subMonths(12))
             ->selectRaw("COUNT(*) as total, TO_CHAR(created_at, 'YYYY-MM') as mois")
             ->groupBy('mois')
@@ -36,25 +26,27 @@ class DashboardAdminController extends Controller
             ->pluck('total', 'mois')
             ->toArray();
 
-        // Joueurs par catégorie
         $joueursParCategorie = Joueur::with('categorie')
             ->get()
-            ->groupBy('categorie.nom')
+            ->groupBy(fn ($j) => $j->categorie->nom ?? 'Sans catégorie')
             ->map->count()
             ->toArray();
 
-        // Derniers ajouts
-        $derniersJoueurs = Joueur::latest()->take(3)->get();
-        $dernierStaff = StaffTechnique::latest()->take(3)->get();
+        $derniersJoueurs = Joueur::with('categorie')->latest()->take(5)->get();
+        $dernierStaff = StaffTechnique::with('categorie')->latest()->take(5)->get();
+        $dernieresActualites = Actualite::latest()->take(4)->get();
 
         return view('admin.dashboard', compact(
             'totalJoueurs',
             'totalStaff',
             'totalCategories',
+            'totalActualites',
+            'totalMedia',
             'joueursParMois',
             'joueursParCategorie',
             'derniersJoueurs',
-            'dernierStaff'
+            'dernierStaff',
+            'dernieresActualites'
         ));
     }
 }

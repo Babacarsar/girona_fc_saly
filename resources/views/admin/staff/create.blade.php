@@ -1,62 +1,39 @@
 @extends('layouts.admin')
 
+@section('title', 'Nouveau staff')
+
 @section('content')
-<div class="container mt-4">
-    <h2>➕ Ajouter un membre du staff technique</h2>
+<x-admin.page-header title="Nouveau membre du staff" breadcrumb='<a href="'.route('admin.staff.index').'">Staff</a> / Création' />
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('admin.staff.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-
-        {{-- Nom --}}
-        <div class="mb-3">
-            <label class="form-label">Nom</label>
-            <input type="text" name="nom" class="form-control" value="{{ old('nom') }}" required>
-        </div>
-
-        {{-- Prénom --}}
-        <div class="mb-3">
-            <label class="form-label">Prénom</label>
-            <input type="text" name="prenom" class="form-control" value="{{ old('prenom') }}" required>
-        </div>
-
-        {{-- Rôle (Poste) --}}
-        <div class="mb-3">
-            <label class="form-label">Rôle</label>
-            <input type="text" name="role" class="form-control" value="{{ old('role') }}" required>
-        </div>
-
-        {{-- Catégorie --}}
-        <div class="mb-3">
-            <label class="form-label">Catégorie</label>
-            <select name="categorie_id" class="form-select" required>
-                <option value="">-- Choisir une catégorie --</option>
-                @foreach($categories as $categorie)
-                    <option value="{{ $categorie->id }}" {{ old('categorie_id') == $categorie->id ? 'selected' : '' }}>
-                        {{ $categorie->nom }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        {{-- Photo --}}
-        <div class="mb-3">
-            <label class="form-label">Photo</label>
-            <input type="file" name="photo" class="form-control">
-        </div>
-
-        {{-- Boutons --}}
-        <button type="submit" class="btn btn-success">💾 Enregistrer</button>
-        <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary">Annuler</a>
-    </form>
+<div class="admin-card">
+    <div class="admin-card__body admin-form">
+        <x-admin.validation-errors />
+        <form action="{{ route('admin.staff.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="row g-3 mb-3">
+                <div class="col-md-6"><label class="form-label">Nom</label><input type="text" name="nom" class="form-control" value="{{ old('nom') }}" required></div>
+                <div class="col-md-6"><label class="form-label">Prénom</label><input type="text" name="prenom" class="form-control" value="{{ old('prenom') }}" required></div>
+                <div class="col-md-6"><label class="form-label">Rôle</label><input type="text" name="role" class="form-control" value="{{ old('role') }}" required placeholder="Entraîneur, adjoint…"></div>
+                <div class="col-md-6">
+                    <label class="form-label">Catégorie</label>
+                    <select name="categorie_id" class="form-select" required>
+                        <option value="">Choisir…</option>
+                        @foreach($categories as $categorie)
+                            <option value="{{ $categorie->id }}" @selected(old('categorie_id') == $categorie->id)>{{ $categorie->nom }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Photo</label>
+                <div class="admin-upload-zone">
+                    <input type="file" name="photo" class="form-control" accept="image/*" data-image-preview="staffPreview">
+                    <img id="staffPreview" class="admin-upload-preview mx-auto mt-3" alt="">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-girona">Enregistrer</button>
+            <a href="{{ route('admin.staff.index') }}" class="btn btn-light">Annuler</a>
+        </form>
+    </div>
 </div>
 @endsection

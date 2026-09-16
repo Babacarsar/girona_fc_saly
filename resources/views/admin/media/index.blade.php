@@ -1,71 +1,55 @@
 @extends('layouts.admin')
 
+@section('title', 'Médias')
+
 @section('content')
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Liste des médias</h2>
-        <a href="{{ route('admin.media.create') }}" class="btn btn-primary">Ajouter un média</a>
+<x-admin.page-header title="Galerie médias" description="Photos et vidéos hébergées sur Cloudinary.">
+    <x-slot:actions>
+        <a href="{{ route('admin.media.create') }}" class="btn btn-girona"><i class="bi bi-cloud-upload me-1"></i> Ajouter</a>
+    </x-slot:actions>
+</x-admin.page-header>
+
+@if($media->count())
+    <div class="row g-4">
+        @foreach($media as $item)
+            <div class="col-sm-6 col-lg-4 col-xl-3">
+                <div class="admin-card h-100">
+                    <div class="ratio ratio-16x9 bg-light">
+                        @if ($item->type === 'image')
+                            <img src="{{ $item->file_path }}" alt="" class="object-fit-cover rounded-top" style="object-fit:cover;width:100%;height:100%">
+                        @else
+                            <video class="w-100 h-100" controls preload="metadata">
+                                <source src="{{ $item->file_path }}" type="video/mp4">
+                            </video>
+                        @endif
+                    </div>
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <div class="fw-semibold text-truncate">{{ $item->title ?: 'Sans titre' }}</div>
+                            <span class="badge badge-girona">{{ ucfirst($item->type) }}</span>
+                        </div>
+                        <small class="text-muted d-block mb-3">{{ $item->created_at->format('d/m/Y H:i') }}</small>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-sm btn-girona-outline flex-grow-1">Modifier</a>
+                            <form action="{{ route('admin.media.destroy', $item) }}" method="POST">
+                                @csrf @method('DELETE')
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-admin-delete="Supprimer ce média ?"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
-
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <div class="table-responsive">
-        <table class="table table-bordered align-middle text-center">
-            <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Titre</th>
-                    <th>Type</th>
-                    <th>Aperçu</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($media as $item)
-                    <tr>
-                        <td>{{ $item->id }}</td>
-                        <td>{{ $item->title ?? '---' }}</td>
-                        <td>
-                            <span class="badge bg-secondary">{{ ucfirst($item->type) }}</span>
-                        </td>
-                        <td>
-                            @if ($item->type === 'image')
-                                <img src="{{ $item->file_path }}" alt="Image" class="img-thumbnail" style="max-width: 150px;">
-                            @elseif ($item->type === 'video')
-                                <video width="200" height="130" controls>
-                                    <source src="{{ $item->file_path }}" type="video/mp4">
-                                    Votre navigateur ne supporte pas la lecture vidéo.
-                                </video>
-                            @endif
-                        </td>
-                        <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
-                        <td>
-                            <div class="d-flex justify-content-center gap-2">
-                                <a href="{{ route('admin.media.edit', $item->id) }}" class="btn btn-sm btn-outline-primary">Modifier</a>
-
-                                <form action="{{ route('admin.media.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger">Supprimer</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6">Aucun média trouvé.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    {{-- Pagination --}}
-    <div class="mt-3">
+    <div class="mt-4 d-flex justify-content-center">
         {{ $media->links() }}
     </div>
-</div>
+@else
+    <div class="admin-card">
+        <div class="admin-empty py-5">
+            <i class="bi bi-camera-reels"></i>
+            Aucun média. <a href="{{ route('admin.media.create') }}">Importer le premier fichier</a>
+        </div>
+    </div>
+@endif
 @endsection
