@@ -1,3 +1,7 @@
+[variables]
+# Required for Laravel DB connections on Railway (MySQL or PostgreSQL).
+NIXPACKS_PHP_EXTENSIONS = "pdo_mysql,pdo_pgsql,mbstring,tokenizer,xml,curl,zip,bcmath"
+
 [phases.setup]
 nixPkgs = [
   "php82",
