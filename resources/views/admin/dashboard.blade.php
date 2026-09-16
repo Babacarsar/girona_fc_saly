@@ -55,6 +55,14 @@
                 <i class="bi bi-cloud-upload"></i> Ajouter média
             </a>
         </div>
+        <form action="{{ route('admin.demo_seed') }}" method="POST" class="mt-4 pt-3 border-top" onsubmit="return confirm('Charger / compléter les données de démo (joueurs, actus, photos URL…) ?');">
+            @csrf
+            <input type="hidden" name="confirm" value="demo">
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-database-add"></i> Données de démonstration
+            </button>
+            <span class="text-muted small ms-2">Mock avec images (sans Cloudinary). Ré-exécutable.</span>
+        </form>
     </div>
 </div>
 
