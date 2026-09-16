@@ -16,9 +16,13 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->booting(function () {
             if (getenv('DB_CONNECTION') === 'pgsql') {
+                if (getenv('DB_CHARSET') === 'utf8mb4') {
+                    putenv('DB_CHARSET=UTF8');
+                }
                 config([
                     'database.default' => 'pgsql',
                     'database.connections.pgsql.charset' => 'utf8',
+                    'database.connections.pgsql.url' => null,
                 ]);
             }
         });
