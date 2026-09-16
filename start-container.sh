@@ -1,12 +1,10 @@
 #!/bin/bash
 set -e
 
-export DB_CHARSET="${DB_CHARSET:-UTF8}"
-if [ "$DB_CHARSET" = "utf8mb4" ]; then
-  export DB_CHARSET=UTF8
-fi
+unset DB_CHARSET
+export DB_CHARSET=UTF8
 
-# Override Railpack default: clear stale config (e.g. MySQL utf8mb4) before DB access.
+echo "Clearing Laravel config cache before database access..."
 php artisan config:clear
 
 if [ "$IS_LARAVEL" = "true" ]; then

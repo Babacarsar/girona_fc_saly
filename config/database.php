@@ -71,7 +71,7 @@ return [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
+            // Omit charset: PostgreSQL uses server default (UTF8). Avoids invalid utf8mb4 from env/cache.
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
