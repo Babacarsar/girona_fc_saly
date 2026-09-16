@@ -10,6 +10,8 @@ use App\Models\Media;
 use App\Models\Partenaire;
 use App\Models\PreInscription;
 use App\Models\StaffTechnique;
+use Cloudinary\Api\Exception\ApiError;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 
@@ -27,6 +29,39 @@ class ClubDemoSeeder extends Seeder
     private const IMG_BALL = 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&q=80';
 
     private const IMG_YOUTH = 'https://images.unsplash.com/photo-1517466787929-bc90951f0977?w=800&q=80';
+
+    private function cloudinaryConfigured(): bool
+    {
+        return filled(config('cloudinary.cloud_name'))
+            && filled(config('cloudinary.api_key'))
+            && filled(config('cloudinary.api_secret'));
+    }
+
+    /**
+     * @return array{url: string, public_id: string|null}
+     */
+    private function uploadDemoImage(string $sourceUrl, string $folder, string $publicId): array
+    {
+        if (! $this->cloudinaryConfigured()) {
+            return ['url' => $sourceUrl, 'public_id' => null];
+        }
+
+        try {
+            $uploaded = Cloudinary::upload($sourceUrl, [
+                'folder' => $folder,
+                'public_id' => $publicId,
+                'overwrite' => true,
+                'resource_type' => 'image',
+            ]);
+
+            return [
+                'url' => $uploaded->getSecurePath(),
+                'public_id' => $uploaded->getPublicId(),
+            ];
+        } catch (ApiError|\Throwable) {
+            return ['url' => $sourceUrl, 'public_id' => null];
+        }
+    }
 
     public function run(): void
     {
@@ -89,6 +124,9 @@ class ClubDemoSeeder extends Seeder
         foreach ($roster as $catName => $players) {
             $catId = $categories[$catName];
             foreach ($players as $p) {
+                $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '_', $p['prenom'].'_'.$p['nom']));
+                $photo = $this->uploadDemoImage($p['photo'], 'joueurs_foot', 'demo_'.$slug);
+
                 Joueur::updateOrCreate(
                     [
                         'nom' => $p['nom'],
@@ -98,7 +136,7 @@ class ClubDemoSeeder extends Seeder
                     [
                         'age' => $p['age'],
                         'poste' => $p['poste'],
-                        'photo' => $p['photo'],
+                        'photo' => $photo['url'],
                         'ordre' => $ordre++,
                     ]
                 );
@@ -119,13 +157,18 @@ class ClubDemoSeeder extends Seeder
         ];
 
         foreach ($members as $m) {
+            $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '_', $m['prenom'].'_'.$m['nom']));
+            $photo = $this->uploadDemoImage($m['photo'], 'staff_technique', 'demo_'.$slug);
+            $payload = $m;
+            $payload['photo'] = $photo['url'];
+
             StaffTechnique::updateOrCreate(
                 [
                     'nom' => $m['nom'],
                     'prenom' => $m['prenom'],
                     'categorie_id' => $m['categorie_id'],
                 ],
-                $m
+                $payload
             );
         }
     }
@@ -176,6 +219,18 @@ class ClubDemoSeeder extends Seeder
         ];
 
         foreach ($articles as $a) {
+            if (! empty($a['image'])) {
+                $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '_', $a['titre']));
+                $cover = $this->uploadDemoImage($a['image'], 'actualites_foot', 'demo_'.substr($slug, 0, 40));
+                $a['image'] = $cover['url'];
+                $a['image_public_id'] = $cover['public_id'];
+                $a['contenu'] = preg_replace(
+                    '#https://images\.unsplash\.com/[^"\']+#',
+                    $cover['url'],
+                    $a['contenu']
+                );
+            }
+
             Actualite::updateOrCreate(['titre' => $a['titre']], $a);
         }
     }
@@ -192,7 +247,11 @@ class ClubDemoSeeder extends Seeder
         ];
 
         foreach ($items as $item) {
-            Media::firstOrCreate(['title' => $item['title']], $item);
+            $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '_', $item['title']));
+            $uploaded = $this->uploadDemoImage($item['file_path'], 'media_girona', 'demo_'.$slug);
+            $item['file_path'] = $uploaded['url'];
+
+            Media::updateOrCreate(['title' => $item['title']], $item);
         }
     }
 
@@ -297,7 +356,11 @@ class ClubDemoSeeder extends Seeder
         ];
 
         foreach ($partners as $p) {
-            Partenaire::firstOrCreate(['nom' => $p['nom']], $p);
+            $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '_', $p['nom']));
+            $logo = $this->uploadDemoImage($p['logo'], 'partenaires_logos', 'demo_'.$slug);
+            $p['logo'] = $logo['url'];
+
+            Partenaire::updateOrCreate(['nom' => $p['nom']], $p);
         }
     }
 

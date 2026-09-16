@@ -37,7 +37,7 @@ def main() -> int:
         f"{BASE}/admin/demo-seed",
         data={"_token": csrf(dash.text), "confirm": "demo"},
         allow_redirects=False,
-        timeout=120,
+        timeout=300,
     )
     if r.status_code == 302:
         print("ClubDemoSeeder OK")
