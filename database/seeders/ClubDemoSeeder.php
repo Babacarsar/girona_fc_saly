@@ -17,18 +17,24 @@ use Illuminate\Support\Carbon;
 
 class ClubDemoSeeder extends Seeder
 {
-    /** Stable Unsplash URLs (football / club themed). */
-    private const IMG_FOOTBALL = 'https://images.unsplash.com/photo-1574623452339-4fdf6922d2f1?w=800&q=80';
+    /** Remote demo images (Picsum — fetchable from Railway / Cloudinary). */
+    private const IMG_FOOTBALL = 'https://picsum.photos/id/1057/800/600';
 
-    private const IMG_STADIUM = 'https://images.unsplash.com/photo-1459865274687-595d652de67e?w=800&q=80';
+    private const IMG_STADIUM = 'https://picsum.photos/id/274/800/600';
 
-    private const IMG_TEAM = 'https://images.unsplash.com/photo-1522778119026-d647f0565c6b?w=800&q=80';
+    private const IMG_TEAM = 'https://picsum.photos/id/433/800/600';
 
-    private const IMG_TRAINING = 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&q=80';
+    private const IMG_TRAINING = 'https://picsum.photos/id/1060/800/600';
 
-    private const IMG_BALL = 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&q=80';
+    private const IMG_BALL = 'https://picsum.photos/id/477/800/600';
 
-    private const IMG_YOUTH = 'https://images.unsplash.com/photo-1517466787929-bc90951f0977?w=800&q=80';
+    private const IMG_YOUTH = 'https://picsum.photos/id/338/800/600';
+
+    private const IMG_HOTEL = 'https://picsum.photos/id/271/200/200';
+
+    private const IMG_NUTRITION = 'https://picsum.photos/id/292/200/200';
+
+    private const IMG_AUTO = 'https://picsum.photos/id/111/200/200';
 
     private function cloudinaryConfigured(): bool
     {
@@ -225,7 +231,7 @@ class ClubDemoSeeder extends Seeder
                 $a['image'] = $cover['url'];
                 $a['image_public_id'] = $cover['public_id'];
                 $a['contenu'] = preg_replace(
-                    '#https://images\.unsplash\.com/[^"\']+#',
+                    '#https://picsum\.photos/[^"\']+#',
                     $cover['url'],
                     $a['contenu']
                 );
@@ -323,7 +329,7 @@ class ClubDemoSeeder extends Seeder
         $partners = [
             [
                 'nom' => 'Saly Resort',
-                'logo' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80',
+                'logo' => self::IMG_HOTEL,
                 'description' => 'Partenaire hébergement & événements',
                 'url' => 'https://example.com/saly-resort',
                 'ordre' => 0,
@@ -331,7 +337,7 @@ class ClubDemoSeeder extends Seeder
             ],
             [
                 'nom' => 'Sport Nutrition SN',
-                'logo' => 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=200&q=80',
+                'logo' => self::IMG_NUTRITION,
                 'description' => 'Nutrition des équipes jeunes',
                 'url' => 'https://example.com/nutrition',
                 'ordre' => 1,
@@ -347,7 +353,7 @@ class ClubDemoSeeder extends Seeder
             ],
             [
                 'nom' => 'Local Auto Saly',
-                'logo' => 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=200&q=80',
+                'logo' => self::IMG_AUTO,
                 'description' => 'Mobilité du club',
                 'url' => null,
                 'ordre' => 3,
