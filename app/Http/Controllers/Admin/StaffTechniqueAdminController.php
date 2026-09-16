@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\StaffTechnique;
 use App\Models\Categorie;
+use App\Models\StaffTechnique;
+use App\Support\AdminListing;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -28,10 +29,18 @@ class StaffTechniqueAdminController extends Controller
             });
         }
 
+        $staff = AdminListing::applySort(
+            $staff,
+            $request,
+            ['nom', 'prenom', 'role', 'created_at'],
+            'nom',
+            'asc'
+        )->paginate(20)->withQueryString();
+
         return view('admin.staff.index', [
-            'staff' => $staff->orderBy('nom')->get(),
+            'staff' => $staff,
             'categories' => $categories,
-            'selectedCategorie' => $request->categorie_id
+            'selectedCategorie' => $request->categorie_id,
         ]);
     }
 

@@ -50,6 +50,15 @@
             <a href="{{ route('admin.media.index') }}" class="admin-nav__link {{ request()->is('admin/media*') ? 'active' : '' }}">
                 <i class="bi bi-images"></i> Médias
             </a>
+            <a href="{{ route('admin.matchs.index') }}" class="admin-nav__link {{ request()->is('admin/matchs*') ? 'active' : '' }}">
+                <i class="bi bi-calendar-event"></i> Matchs
+            </a>
+            <a href="{{ route('admin.partenaires.index') }}" class="admin-nav__link {{ request()->is('admin/partenaires*') ? 'active' : '' }}">
+                <i class="bi bi-building"></i> Partenaires
+            </a>
+            <a href="{{ route('admin.pre_inscriptions.index') }}" class="admin-nav__link {{ request()->is('admin/pre-inscriptions*') ? 'active' : '' }}">
+                <i class="bi bi-clipboard-check"></i> Pré-inscriptions
+            </a>
         </nav>
 
         <div class="admin-sidebar__footer">

@@ -4,74 +4,72 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Actualite;
-use Illuminate\Http\Request;
+use App\Support\AdminListing;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Http\Request;
 
 class ActualiteAdminController extends Controller
 {
-    // Liste des actualités
-    public function index()
+    public function index(Request $request)
     {
-        $actualites = Actualite::latest()->get();
+        $query = Actualite::query();
+
+        if ($request->filled('statut')) {
+            $query->where('statut', $request->statut);
+        }
+
+        $actualites = AdminListing::applySort(
+            $query,
+            $request,
+            ['titre', 'created_at', 'ordre', 'statut'],
+            'ordre',
+            'asc'
+        )->paginate(15)->withQueryString();
+
         return view('admin.actualites.index', compact('actualites'));
     }
 
-    // Formulaire d'ajout
     public function create()
     {
         return view('admin.actualites.create');
     }
 
-    // Enregistrement d'une nouvelle actualité
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'titre'             => 'required|string|max:255',
-            'contenu'           => 'required|string',
-            'auteur'            => 'nullable|string|max:100',
-            'date_publication'  => 'nullable|date',
-            'image'             => 'nullable|image|max:2048',
-        ]);
+        $data = $this->validated($request);
 
-        // Upload vers Cloudinary si image présente
         if ($request->hasFile('image')) {
             $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
-                'folder' => 'actualites_foot'
+                'folder' => 'actualites_foot',
             ]);
             $data['image'] = $uploaded->getSecurePath();
             $data['image_public_id'] = $uploaded->getPublicId();
         }
 
+        if (! isset($data['ordre'])) {
+            $data['ordre'] = (int) Actualite::max('ordre') + 1;
+        }
+
         Actualite::create($data);
 
-        return redirect()->route('admin.actualites.index')->with('success', 'Actualité ajoutée avec succès.');
+        return redirect()->route('admin.actualites.index')->with('success', 'Actualité enregistrée.');
     }
 
-    // Formulaire de modification
     public function edit(Actualite $actualite)
     {
         return view('admin.actualites.edit', compact('actualite'));
     }
 
-    // Mise à jour d'une actualité
     public function update(Request $request, Actualite $actualite)
     {
-        $data = $request->validate([
-            'titre'             => 'required|string|max:255',
-            'contenu'           => 'required|string',
-            'auteur'            => 'nullable|string|max:100',
-            'date_publication'  => 'nullable|date',
-            'image'             => 'nullable|image|max:2048',
-        ]);
+        $data = $this->validated($request);
 
-        // Supprimer l’ancienne image Cloudinary si nouvelle image envoyée
         if ($request->hasFile('image')) {
             if ($actualite->image_public_id) {
                 Cloudinary::destroy($actualite->image_public_id);
             }
-
             $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
-                'folder' => 'actualites_foot'
+                'folder' => 'actualites_foot',
             ]);
             $data['image'] = $uploaded->getSecurePath();
             $data['image_public_id'] = $uploaded->getPublicId();
@@ -82,15 +80,42 @@ class ActualiteAdminController extends Controller
         return redirect()->route('admin.actualites.index')->with('success', 'Actualité mise à jour.');
     }
 
-    // Suppression d'une actualité
     public function destroy(Actualite $actualite)
     {
         if ($actualite->image_public_id) {
             Cloudinary::destroy($actualite->image_public_id);
         }
-
         $actualite->delete();
 
         return redirect()->route('admin.actualites.index')->with('success', 'Actualité supprimée.');
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate(['ids' => 'required|array', 'ids.*' => 'integer|exists:actualites,id']);
+
+        foreach ($request->ids as $index => $id) {
+            Actualite::where('id', $id)->update(['ordre' => $index]);
+        }
+
+        return back()->with('success', 'Ordre des actualités mis à jour.');
+    }
+
+    private function validated(Request $request): array
+    {
+        $data = $request->validate([
+            'titre' => 'required|string|max:255',
+            'contenu' => 'required|string',
+            'auteur' => 'nullable|string|max:100',
+            'date_publication' => 'nullable|date',
+            'image' => 'nullable|image|max:2048',
+            'statut' => 'required|in:draft,published',
+            'ordre' => 'nullable|integer|min:0',
+            'a_la_une' => 'nullable|boolean',
+        ]);
+
+        $data['a_la_une'] = $request->boolean('a_la_une');
+
+        return $data;
     }
 }

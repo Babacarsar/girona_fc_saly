@@ -61,6 +61,7 @@
                 </tbody>
             </table>
         </div>
+        <div class="mt-3">{{ $staff->links() }}</div>
     </div>
 </div>
 @endsection

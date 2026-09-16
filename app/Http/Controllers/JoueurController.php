@@ -3,12 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Joueur;
-use Illuminate\Http\Request;
 
 class JoueurController extends Controller
-{ 
+{
     public function index()
     {
-        return Joueur::with('categorie')->get();
+        return Joueur::with('categorie')
+            ->orderBy('ordre')
+            ->orderBy('nom')
+            ->get();
+    }
+
+    public function show(Joueur $joueur)
+    {
+        return $joueur->load('categorie');
     }
 }
