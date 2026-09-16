@@ -11,6 +11,7 @@ if [ "$IS_LARAVEL" = "true" ]; then
   if [ "$RAILPACK_SKIP_MIGRATIONS" != "true" ]; then
     echo "Running migrations and seeding database ..."
     php artisan migrate --force
+    php artisan db:seed --class=AdminUserSeeder --force
   fi
 
   php artisan storage:link
