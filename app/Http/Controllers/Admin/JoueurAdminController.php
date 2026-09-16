@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Categorie;
 use App\Models\Joueur;
+use App\Support\AdminListing;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -28,11 +29,30 @@ class JoueurAdminController extends Controller
             });
         }
 
+        $joueurs = AdminListing::applySort(
+            $joueurs,
+            $request,
+            ['nom', 'prenom', 'poste', 'ordre', 'created_at'],
+            'ordre',
+            'asc'
+        )->paginate(20)->withQueryString();
+
         return view('admin.joueurs.index', [
-            'joueurs' => $joueurs->orderBy('nom')->get(),
+            'joueurs' => $joueurs,
             'categories' => $categories,
-            'selectedCategorie' => $request->categorie_id
+            'selectedCategorie' => $request->categorie_id,
         ]);
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate(['ids' => 'required|array', 'ids.*' => 'integer|exists:joueurs,id']);
+
+        foreach ($request->ids as $index => $id) {
+            Joueur::where('id', $id)->update(['ordre' => $index]);
+        }
+
+        return back()->with('success', 'Ordre des joueurs mis à jour.');
     }
 
     public function create()
@@ -60,6 +80,7 @@ class JoueurAdminController extends Controller
             $data['photo'] = $uploaded->getSecurePath();
         }
 
+        $data['ordre'] = (int) Joueur::max('ordre') + 1;
         Joueur::create($data);
         return redirect()->route('admin.joueurs.index')->with('success', 'Joueur ajouté avec succès.');
     }

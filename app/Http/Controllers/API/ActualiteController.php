@@ -7,19 +7,21 @@ use App\Models\Actualite;
 
 class ActualiteController extends Controller
 {
-    // GET /api/actualites
     public function index()
     {
-        // Retourne toutes les actualités, les plus récentes en premier
         return response()->json(
-            Actualite::orderBy('created_at', 'desc')->get()
+            Actualite::published()
+                ->orderByDesc('a_la_une')
+                ->orderBy('ordre')
+                ->orderByDesc('created_at')
+                ->get()
         );
     }
 
-    // GET /api/actualites/{id}
     public function show($id)
     {
-        $actualite = Actualite::findOrFail($id);
+        $actualite = Actualite::published()->findOrFail($id);
+
         return response()->json($actualite);
     }
 }
