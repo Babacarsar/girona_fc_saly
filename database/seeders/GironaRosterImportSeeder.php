@@ -11,18 +11,9 @@ use App\Support\JoueurPhotoFilename;
 use App\Support\JoueurPhotoImport;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class GironaRosterImportSeeder extends Seeder
 {
-    private const DEFAULT_AGE = [
-        'U13' => 13,
-        'U15' => 15,
-        'U17' => 17,
-        'U19' => 19,
-        'Senior' => 20,
-    ];
-
     public function run(): void
     {
         $path = database_path('seeders/data/girona_roster.json');
@@ -34,7 +25,6 @@ class GironaRosterImportSeeder extends Seeder
         $categories = $payload['categories'] ?? [];
         $joueurs = $payload['joueurs'] ?? [];
 
-        $this->mergeSeniorGoalkeepersFromPhotos($categories, $joueurs);
         $photoByPlayer = $this->indexDiscoveredPhotos();
 
         DB::transaction(function () use ($categories, $joueurs, $photoByPlayer) {
@@ -62,7 +52,7 @@ class GironaRosterImportSeeder extends Seeder
                 Joueur::create([
                     'nom' => $row['nom'],
                     'prenom' => $row['prenom'],
-                    'age' => self::DEFAULT_AGE[$catNom] ?? 15,
+                    'age' => null,
                     'poste' => $poste,
                     'categorie_id' => $catIds[$catNom],
                     'photo' => $photo,
@@ -87,41 +77,6 @@ class GironaRosterImportSeeder extends Seeder
         }
 
         return $map;
-    }
-
-    /**
-     * @param  list<string>  $categories
-     * @param  list<array<string, mixed>>  $joueurs
-     */
-    private function mergeSeniorGoalkeepersFromPhotos(array &$categories, array &$joueurs): void
-    {
-        $dir = database_path(JoueurPhotoImport::PHOTOS_ROOT.'/Senior');
-        if (! is_dir($dir)) {
-            return;
-        }
-
-        if (! in_array('Senior', $categories, true)) {
-            $categories[] = 'Senior';
-        }
-
-        $joueurs = array_values(array_filter(
-            $joueurs,
-            fn (array $row) => ($row['categorie'] ?? '') !== 'Senior'
-        ));
-
-        foreach (File::files($dir) as $file) {
-            $parsed = JoueurPhotoFilename::parse($file->getFilename());
-            if ($parsed === null || $parsed['poste'] !== 'Gardien') {
-                continue;
-            }
-
-            $joueurs[] = [
-                'nom' => $parsed['nom'],
-                'prenom' => $parsed['prenom'],
-                'poste' => 'Gardien',
-                'categorie' => 'Senior',
-            ];
-        }
     }
 
     /**

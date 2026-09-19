@@ -24,15 +24,11 @@
                     <label class="form-label">Prénom</label>
                     <input type="text" name="prenom" class="form-control" value="{{ old('prenom') }}" required>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Âge</label>
-                    <input type="number" name="age" class="form-control" value="{{ old('age') }}" min="1" required>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Poste</label>
                     <input type="text" name="poste" class="form-control" value="{{ old('poste') }}" placeholder="Ex. Attaquant">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Catégorie</label>
                     <select name="categorie_id" class="form-select" required>
                         <option value="">Choisir…</option>
