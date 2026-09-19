@@ -11,7 +11,7 @@
 <tbody data-reorder-body data-reorder-form="partenaires-reorder-form">
 @forelse($partenaires as $p)
 <tr data-id="{{ $p->id }}"><td><span class="reorder-handle"><i class="bi bi-grip-vertical"></i></span></td>
-<td><img src="{{ $p->logo }}" alt="" height="40"></td>
+<td><img src="{{ admin_media_url($p->logo, $p->nom) }}" alt="" height="40"></td>
 <td>{{ $p->nom }}</td>
 <td>{{ $p->actif ? 'Oui' : 'Non' }}</td>
 <td class="text-end">
