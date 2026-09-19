@@ -22,7 +22,10 @@ return [
         ? array_values(array_filter(array_map('trim', explode(',', $frontendUrls))))
         : ['*'],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        // Vercel production + preview deployments (goal-getter-club)
+        '#^https://([a-z0-9-]+--)?[a-z0-9-]+(?:-[a-z0-9-]+)*\.vercel\.app$#',
+    ],
 
     'allowed_headers' => ['*'],
 
