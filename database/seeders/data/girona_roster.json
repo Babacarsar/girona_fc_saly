@@ -1,0 +1,115 @@
+{
+  "categories": [
+    "U13",
+    "U15",
+    "U17",
+    "U19"
+  ],
+  "joueurs": [
+    {
+      "dossar": 10,
+      "nom": "KOUYATE",
+      "prenom": "Oumar",
+      "poste": "Gardien",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 9,
+      "nom": "BA",
+      "prenom": "Amadou",
+      "poste": "Gardien",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 1,
+      "nom": "SANE",
+      "prenom": "Fode",
+      "poste": "Defense",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 5,
+      "nom": "DIAGNE",
+      "prenom": "Babacar",
+      "poste": "Defense",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 16,
+      "nom": "MBENGUE",
+      "prenom": "Cherif",
+      "poste": "Defense",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 11,
+      "nom": "DIALLO",
+      "prenom": "Amadou Diang",
+      "poste": "Defense",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 12,
+      "nom": "COULIBALY",
+      "prenom": "Maodo",
+      "poste": "Defense",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 6,
+      "nom": "NGOM",
+      "prenom": "El hadji",
+      "poste": "Milieu",
+      "categorie": "U13"
+    },
+    {
+      "dossar": 10,
+      "nom": "BA",
+      "prenom": "Adama",
+      "poste": "Milieu",
+      "categorie": "U15"
+    },
+    {
+      "dossar": 9,
+      "nom": "COLY",
+      "prenom": "Moussa",
+      "poste": "Attaque",
+      "categorie": "U15"
+    },
+    {
+      "dossar": 1,
+      "nom": "DIOP",
+      "prenom": "Mohamed",
+      "poste": "Gardien",
+      "categorie": "U15"
+    },
+    {
+      "dossar": 5,
+      "nom": "DIOP",
+      "prenom": "Pape",
+      "poste": "Milieu",
+      "categorie": "U15"
+    },
+    {
+      "dossar": 16,
+      "nom": "DIOP",
+      "prenom": "Fallou",
+      "poste": "Gardien",
+      "categorie": "U15"
+    },
+    {
+      "dossar": 11,
+      "nom": "FALL",
+      "prenom": "Khoudoss",
+      "poste": "Attaque",
+      "categorie": "U15"
+    },
+    {
+      "dossar": 4,
+      "nom": "NDAO",
+      "prenom": "Mor",
+      "poste": "Defense",
+      "categorie": "U15"
+    }
+  ]
+}

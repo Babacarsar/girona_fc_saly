@@ -55,7 +55,15 @@
                 <i class="bi bi-cloud-upload"></i> Ajouter média
             </a>
         </div>
-        <form action="{{ route('admin.demo_seed') }}" method="POST" class="mt-4 pt-3 border-top" onsubmit="return confirm('Charger / compléter les données de démo (joueurs, actus, photos URL…) ?');">
+        <form action="{{ route('admin.roster_import') }}" method="POST" class="mt-4 pt-3 border-top" onsubmit="return confirm('Remplacer TOUTES les catégories et joueurs (et vider staff / pré-inscriptions) par l’effectif Excel officiel ?');">
+            @csrf
+            <input type="hidden" name="confirm" value="import">
+            <button type="submit" class="btn btn-girona btn-sm">
+                <i class="bi bi-file-earmark-spreadsheet"></i> Importer effectif Excel (U13/U15)
+            </button>
+            <span class="text-muted small ms-2">Catégories U13, U15, U17, U19 — données <code>girona_roster.json</code>.</span>
+        </form>
+        <form action="{{ route('admin.demo_seed') }}" method="POST" class="mt-3" onsubmit="return confirm('Charger / compléter les données de démo (joueurs, actus, photos URL…) ?');">
             @csrf
             <input type="hidden" name="confirm" value="demo">
             <button type="submit" class="btn btn-outline-danger btn-sm">
