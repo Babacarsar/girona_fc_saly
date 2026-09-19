@@ -18,20 +18,20 @@ public function store(Request $request)
     return response()->json($categorie, 201);
 }
 
-public function show(Categorie $categorie)
+public function show(Categorie $category)
 {
-    return response()->json($categorie);
+    return response()->json($category);
 }
 
-public function update(Request $request, Categorie $categorie)
+public function update(Request $request, Categorie $category)
 {
-    $categorie->update($request->all());
-    return response()->json($categorie);
+    $category->update($request->all());
+    return response()->json($category);
 }
 
-public function destroy(Categorie $categorie)
+public function destroy(Categorie $category)
 {
-    $categorie->delete();
+    $category->delete();
     return response()->json(['message' => 'Catégorie supprimée']);
 }
 public function joueurs($id)
