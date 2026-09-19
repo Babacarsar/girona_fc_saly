@@ -3,7 +3,8 @@
     "U13",
     "U15",
     "U17",
-    "U19"
+    "U19",
+    "Senior"
   ],
   "joueurs": [
     {
@@ -110,6 +111,20 @@
       "prenom": "Mor",
       "poste": "Defense",
       "categorie": "U15"
+    },
+    {
+      "nom": "DIOP",
+      "prenom": "Abou Manga",
+      "poste": "Gardien",
+      "categorie": "Senior",
+      "photo_file": "G-Abou-Manga-Diop.jpg"
+    },
+    {
+      "nom": "FALL",
+      "prenom": "Bamba",
+      "poste": "Gardien",
+      "categorie": "Senior",
+      "photo_file": "G-Bamba-Fall.jpg"
     }
   ]
 }
