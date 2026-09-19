@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\DemoSeedAdminController;
 use App\Http\Controllers\Admin\EditorUploadController;
 use App\Http\Controllers\Admin\JoueurAdminController;
+use App\Http\Controllers\Admin\JoueurPhotosSyncAdminController;
 use App\Http\Controllers\Admin\MatchAdminController;
 use App\Http\Controllers\Admin\MediaAdminController;
 use App\Http\Controllers\Admin\PartenaireAdminController;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/demo-seed', [DemoSeedAdminController::class, 'store'])->name('admin.demo_seed');
     Route::post('/admin/roster-import', [RosterImportAdminController::class, 'store'])->name('admin.roster_import');
+    Route::post('/admin/joueur-photos-sync', [JoueurPhotosSyncAdminController::class, 'store'])->name('admin.joueur_photos_sync');
 
     Route::prefix('admin')->group(function () {
         Route::get('/actualites', [ActualiteAdminController::class, 'index'])->name('admin.actualites.index');

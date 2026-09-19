@@ -18,6 +18,6 @@ class RosterImportAdminController extends Controller
 
         return redirect()
             ->route('admin.joueurs.index')
-            ->with('success', 'Effectif remplacé depuis la base Excel (catégories U13–U19, joueurs U13/U15).');
+            ->with('success', 'Effectif importé (U13–U19 + gardiens Senior depuis les photos G-*.jpg).');
     }
 }

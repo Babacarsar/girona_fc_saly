@@ -1,0 +1,16 @@
+[
+  {
+    "file": "amadou.jpg",
+    "prenom": "Amadou",
+    "nom": "BA",
+    "categorie": "U13",
+    "poste": "Gardien"
+  },
+  {
+    "file": "moussa.jpg",
+    "prenom": "Moussa",
+    "nom": "COLY",
+    "categorie": "U15",
+    "poste": "Attaque"
+  }
+]
