@@ -66,7 +66,6 @@ class JoueurAdminController extends Controller
         $data = $request->validate([
     'nom'         => 'required|string|max:255',
     'prenom'      => 'required|string|max:255', // ✅ manquant
-    'age'          => 'required|integer|min:1',
     'categorie_id'=> 'required|exists:categories,id',
     'poste'       => 'nullable|string|max:255',
     'numero'      => 'nullable|integer',
@@ -85,6 +84,7 @@ class JoueurAdminController extends Controller
 
         unset($data['photo_url']);
         $data['ordre'] = (int) Joueur::max('ordre') + 1;
+        $data['age'] = null;
         Joueur::create($data);
         return redirect()->route('admin.joueurs.index')->with('success', 'Joueur ajouté avec succès.');
     }

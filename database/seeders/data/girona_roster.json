@@ -113,18 +113,130 @@
       "categorie": "U15"
     },
     {
-      "nom": "DIOP",
-      "prenom": "Abou Manga",
+      "nom": "CISSE",
+      "prenom": "Abdourahmane",
       "poste": "Gardien",
-      "categorie": "Senior",
-      "photo_file": "G-Abou-Manga-Diop.jpg"
+      "categorie": "Senior"
     },
     {
-      "nom": "FALL",
-      "prenom": "Bamba",
+      "nom": "SOW",
+      "prenom": "Serigne Fallou",
       "poste": "Gardien",
-      "categorie": "Senior",
-      "photo_file": "G-Bamba-Fall.jpg"
+      "categorie": "Senior"
+    },
+    {
+      "nom": "SOW",
+      "prenom": "Alpha",
+      "poste": "Défenseur / Attaquant",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "SENE",
+      "prenom": "El Hadji Ablaye",
+      "poste": "Défenseur",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "DIAGNE",
+      "prenom": "Mamadou Diouf",
+      "poste": "Défenseur",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "NDIAYE",
+      "prenom": "Mansour",
+      "poste": "Défenseur",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "KOUNTA",
+      "prenom": "Mouhamed",
+      "poste": "Défenseur",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "GUEYE",
+      "prenom": "Moustapha",
+      "poste": "Défenseur",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "KONARE",
+      "prenom": "Pape Niebe",
+      "poste": "Défenseur",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "DIOUF",
+      "prenom": "Pape Sidi Bouya",
+      "poste": "Défenseur",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "SAMB",
+      "prenom": "Abibou",
+      "poste": "Milieu",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "GUEYE",
+      "prenom": "Becaye",
+      "poste": "Milieu",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "KAMA",
+      "prenom": "Charles",
+      "poste": "Milieu",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "GUEYE",
+      "prenom": "Demba",
+      "poste": "Milieu",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "LAM",
+      "prenom": "Djiby",
+      "poste": "Milieu",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "NGOM",
+      "prenom": "Mouhamed",
+      "poste": "Milieu / Attaquant",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "DIOP",
+      "prenom": "Souleymane Kane",
+      "poste": "Milieu",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "GOUDIABY",
+      "prenom": "Cheikhou",
+      "poste": "Attaquant",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "BA",
+      "prenom": "Mamadou Lamine",
+      "poste": "Attaquant",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "NDIAYE",
+      "prenom": "Sidy",
+      "poste": "Attaquant",
+      "categorie": "Senior"
+    },
+    {
+      "nom": "SENE",
+      "prenom": "Syni",
+      "poste": "Attaquant",
+      "categorie": "Senior"
     }
   ]
 }
