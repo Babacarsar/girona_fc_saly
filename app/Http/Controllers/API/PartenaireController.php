@@ -12,6 +12,12 @@ class PartenaireController extends Controller
         return Partenaire::active()
             ->orderBy('ordre')
             ->orderBy('nom')
-            ->get();
+            ->get()
+            ->map(function (Partenaire $partenaire) {
+                $data = $partenaire->toArray();
+                $data['logo'] = admin_media_url($partenaire->logo, $partenaire->nom);
+
+                return $data;
+            });
     }
 }
