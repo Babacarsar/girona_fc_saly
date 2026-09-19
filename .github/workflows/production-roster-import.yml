@@ -1,0 +1,33 @@
+name: Production roster import
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "database/seeders/data/girona_roster.json"
+      - ".github/workflows/production-roster-import.yml"
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      - name: Import effectif + photos on Railway
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          GIRONA_BASE_URL: ${{ vars.GIRONA_BASE_URL }}
+        run: |
+          if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ]; then
+            echo "::warning::Set ADMIN_EMAIL and ADMIN_PASSWORD in repo secrets to auto-import."
+            exit 0
+          fi
+          python3 scripts/trigger_production_roster_and_photos.py
