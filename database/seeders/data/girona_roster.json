@@ -4,6 +4,7 @@
     "U15",
     "U17",
     "U19",
+    "Cadet",
     "Senior"
   ],
   "joueurs": [
@@ -111,6 +112,156 @@
       "prenom": "Mor",
       "poste": "Defense",
       "categorie": "U15"
+    },
+    {
+      "nom": "BALDE",
+      "prenom": "Adama",
+      "poste": "Gardien",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "BA",
+      "prenom": "Thierno Yaya",
+      "poste": "Gardien",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIOP",
+      "prenom": "Fallou",
+      "poste": "Gardien",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "SECK",
+      "prenom": "Aliou",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "NDIAYE",
+      "prenom": "Aly",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "SAGNA",
+      "prenom": "Amidou",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIOUF",
+      "prenom": "El Hadji Baba",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIOP",
+      "prenom": "Fara",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "SARR",
+      "prenom": "Makane",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "NIANG",
+      "prenom": "Ousseynou",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "MERI",
+      "prenom": "Pape",
+      "poste": "Défenseur",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIEDHIOU",
+      "prenom": "Pape Sana",
+      "poste": "Milieu",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "SENE",
+      "prenom": "Lamine",
+      "poste": "Milieu",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "GUEYE",
+      "prenom": "Mame Mor",
+      "poste": "Milieu",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIATTA",
+      "prenom": "Omar",
+      "poste": "Milieu",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "GUEYE",
+      "prenom": "Ousmane",
+      "poste": "Milieu",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "TAMBA",
+      "prenom": "Ousmane",
+      "poste": "Milieu",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIOP",
+      "prenom": "Pape Fasar",
+      "poste": "Milieu",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "TINE",
+      "prenom": "Doufi",
+      "poste": "Attaquant",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIAME",
+      "prenom": "Issa",
+      "poste": "Attaquant",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "MANE",
+      "prenom": "Keba",
+      "poste": "Attaquant",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "NDOYE",
+      "prenom": "Khadim",
+      "poste": "Attaquant",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "DIADIOU",
+      "prenom": "Lafi",
+      "poste": "Attaquant",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "NDIAYE",
+      "prenom": "Ousmane",
+      "poste": "Attaquant",
+      "categorie": "Cadet"
+    },
+    {
+      "nom": "BIAGUI",
+      "prenom": "Pape Landing",
+      "poste": "Attaquant",
+      "categorie": "Cadet"
     },
     {
       "nom": "CISSE",

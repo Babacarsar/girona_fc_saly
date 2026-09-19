@@ -11,7 +11,7 @@ final class JoueurPhotoImport
     public const PHOTOS_ROOT = 'seeders/data/joueur_photos';
 
     /** @var list<string> */
-    public const CATEGORY_DIRS = ['U13', 'U15', 'U17', 'U19', 'Senior'];
+    public const CATEGORY_DIRS = ['U13', 'U15', 'U17', 'U19', 'Cadet', 'Senior'];
 
     /**
      * @return list<array{categorie: string, prenom: string, nom: string, poste: string|null, source: string, filename: string}>

@@ -61,7 +61,7 @@
             <button type="submit" class="btn btn-girona btn-sm">
                 <i class="bi bi-file-earmark-spreadsheet"></i> Importer effectif Excel (U13/U15)
             </button>
-            <span class="text-muted small ms-2">Catégories U13–U19 + Senior (gardiens : photos <code>G-Prénom-Nom.jpg</code> dans <code>joueur_photos/Senior</code>).</span>
+            <span class="text-muted small ms-2">Effectif JSON : U13–U19, Cadet, Senior (+ photos dans <code>joueur_photos/{catégorie}</code>).</span>
         </form>
         <form action="{{ route('admin.joueur_photos_sync') }}" method="POST" class="mt-3" onsubmit="return confirm('Mettre à jour les photos des joueurs existants depuis joueur_photos/ (sans modifier l’effectif) ?');">
             @csrf
