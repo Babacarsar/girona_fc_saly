@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\MatchAdminController;
 use App\Http\Controllers\Admin\MediaAdminController;
 use App\Http\Controllers\Admin\PartenaireAdminController;
 use App\Http\Controllers\Admin\PreInscriptionAdminController;
+use App\Http\Controllers\Admin\RosterImportAdminController;
 use App\Http\Controllers\Admin\StaffTechniqueAdminController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/demo-seed', [DemoSeedAdminController::class, 'store'])->name('admin.demo_seed');
+    Route::post('/admin/roster-import', [RosterImportAdminController::class, 'store'])->name('admin.roster_import');
 
     Route::prefix('admin')->group(function () {
         Route::get('/actualites', [ActualiteAdminController::class, 'index'])->name('admin.actualites.index');
