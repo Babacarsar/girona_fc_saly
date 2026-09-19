@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/joueurs', [JoueurAdminController::class, 'index'])->name('admin.joueurs.index');
         Route::post('/joueurs/bulk-delete', [JoueurAdminController::class, 'bulkDestroy'])->name('admin.joueurs.bulk_destroy');
         Route::put('/joueurs/bulk-update', [JoueurAdminController::class, 'bulkUpdate'])->name('admin.joueurs.bulk_update');
+        Route::post('/joueurs/bulk-photos', [JoueurAdminController::class, 'bulkPhotosEdit'])->name('admin.joueurs.bulk_photos.edit');
+        Route::post('/joueurs/bulk-photos/save', [JoueurAdminController::class, 'bulkPhotosStore'])->name('admin.joueurs.bulk_photos.store');
         Route::post('/joueurs/reorder', [JoueurAdminController::class, 'reorder'])->name('admin.joueurs.reorder');
         Route::get('/joueurs/create', [JoueurAdminController::class, 'create'])->name('admin.joueurs.create');
         Route::post('/joueurs', [JoueurAdminController::class, 'store'])->name('admin.joueurs.store');

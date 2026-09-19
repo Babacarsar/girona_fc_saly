@@ -170,4 +170,67 @@ class JoueurAdminController extends Controller
             ->route('admin.joueurs.index', $request->only(['q', 'categorie_id', 'page']))
             ->with('success', $count.' joueur(s) mis à jour.');
     }
+
+    public function bulkPhotosEdit(Request $request)
+    {
+        $data = $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:joueurs,id',
+        ]);
+
+        $joueurs = Joueur::with('categorie')
+            ->whereIn('id', $data['ids'])
+            ->orderBy('ordre')
+            ->orderBy('nom')
+            ->get();
+
+        return view('admin.joueurs.bulk-photos', [
+            'joueurs' => $joueurs,
+            'listQuery' => $request->only(['q', 'categorie_id', 'page']),
+        ]);
+    }
+
+    public function bulkPhotosStore(Request $request)
+    {
+        set_time_limit(300);
+
+        $data = $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:joueurs,id',
+            'photos' => 'nullable|array',
+            'photos.*' => 'nullable|image|max:5120',
+        ]);
+
+        $updated = 0;
+        foreach ($data['ids'] as $id) {
+            if (! $request->hasFile("photos.{$id}")) {
+                continue;
+            }
+            $joueur = Joueur::find($id);
+            if ($joueur === null) {
+                continue;
+            }
+            $joueur->update([
+                'photo' => $this->uploadJoueurPhoto($request->file("photos.{$id}")),
+            ]);
+            $updated++;
+        }
+
+        if ($updated === 0) {
+            return back()->withErrors(['photos' => 'Ajoutez au moins une photo avant d’enregistrer.']);
+        }
+
+        return redirect()
+            ->route('admin.joueurs.index', $request->only(['q', 'categorie_id', 'page']))
+            ->with('success', $updated.' photo(s) enregistrée(s).');
+    }
+
+    private function uploadJoueurPhoto(\Illuminate\Http\UploadedFile $file): string
+    {
+        $uploaded = Cloudinary::upload($file->getRealPath(), [
+            'folder' => 'joueurs_foot',
+        ]);
+
+        return $uploaded->getSecurePath();
+    }
 }

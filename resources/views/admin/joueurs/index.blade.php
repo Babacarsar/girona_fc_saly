@@ -36,6 +36,9 @@
             <button type="button" class="btn btn-sm btn-girona-outline" data-bs-toggle="modal" data-bs-target="#joueursBulkEditModal">
                 <i class="bi bi-pencil me-1"></i> Modifier
             </button>
+            <button type="submit" form="joueurs-bulk-photos-form" class="btn btn-sm btn-girona">
+                <i class="bi bi-camera me-1"></i> Photos
+            </button>
             <button type="button" class="btn btn-sm btn-outline-danger" id="joueurs-bulk-delete-btn">
                 <i class="bi bi-trash me-1"></i> Supprimer
             </button>
@@ -95,6 +98,13 @@
         <div class="mt-3">{{ $joueurs->links() }}</div>
     </div>
 </div>
+
+<form id="joueurs-bulk-photos-form" method="POST" action="{{ route('admin.joueurs.bulk_photos.edit') }}" class="d-none">
+    @csrf
+    @foreach(request()->only(['q', 'categorie_id', 'page']) as $key => $val)
+        <input type="hidden" name="{{ $key }}" value="{{ $val }}">
+    @endforeach
+</form>
 
 <form id="joueurs-bulk-delete-form" method="POST" action="{{ route('admin.joueurs.bulk_destroy') }}" class="d-none">
     @csrf

@@ -5,6 +5,7 @@
   const countEl = document.getElementById("joueurs-bulk-count");
   const deleteForm = document.getElementById("joueurs-bulk-delete-form");
   const updateForm = document.getElementById("joueurs-bulk-update-form");
+  const photosForm = document.getElementById("joueurs-bulk-photos-form");
   const deleteBtn = document.getElementById("joueurs-bulk-delete-btn");
 
   if (!selectAll || !bar) return;
@@ -71,4 +72,12 @@
   document
     .getElementById("joueursBulkEditModal")
     ?.addEventListener("show.bs.modal", () => syncHiddenIds(updateForm));
+
+  photosForm?.addEventListener("submit", (e) => {
+    if (selectedIds().length === 0) {
+      e.preventDefault();
+      return;
+    }
+    syncHiddenIds(photosForm);
+  });
 })();
