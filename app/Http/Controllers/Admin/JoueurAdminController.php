@@ -126,4 +126,48 @@ class JoueurAdminController extends Controller
         $joueur->delete();
         return redirect()->route('admin.joueurs.index')->with('success', 'Joueur supprimé.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $data = $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:joueurs,id',
+        ]);
+
+        $count = Joueur::whereIn('id', $data['ids'])->delete();
+
+        return redirect()
+            ->route('admin.joueurs.index', $request->only(['q', 'categorie_id', 'page']))
+            ->with('success', $count.' joueur(s) supprimé(s).');
+    }
+
+    public function bulkUpdate(Request $request)
+    {
+        $data = $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:joueurs,id',
+            'categorie_id' => 'nullable|exists:categories,id',
+            'poste' => 'nullable|string|max:255',
+        ]);
+
+        if (! $request->filled('categorie_id') && ! $request->filled('poste')) {
+            return back()
+                ->withInput()
+                ->withErrors(['bulk' => 'Choisissez une catégorie et/ou un poste à appliquer.']);
+        }
+
+        $payload = [];
+        if ($request->filled('categorie_id')) {
+            $payload['categorie_id'] = $data['categorie_id'];
+        }
+        if ($request->filled('poste')) {
+            $payload['poste'] = $data['poste'];
+        }
+
+        $count = Joueur::whereIn('id', $data['ids'])->update($payload);
+
+        return redirect()
+            ->route('admin.joueurs.index', $request->only(['q', 'categorie_id', 'page']))
+            ->with('success', $count.' joueur(s) mis à jour.');
+    }
 }
